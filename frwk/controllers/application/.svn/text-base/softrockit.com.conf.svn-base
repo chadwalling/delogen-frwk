@@ -1,0 +1,120 @@
+<VirtualHost 204.15.86.56:443>
+    ServerName softrockit.com
+    ServerAlias www.softrockit.com
+    ServerAlias softrockit
+
+    DocumentRoot '/home/softrockit/softrockit.com'
+    AliasMatch '^(/images/.*\.(jpg|jpeg|gif|png|ico))$' '/home/softrockit/softrockit.com/views$1'
+    AliasMatch '^(/flash/.*\.(swf))$' '/home/softrockit/views$1'
+    AliasMatch ".*" '/home/softrockit/softrockit.com/controllers/Main.php'
+
+    ErrorLog '/home/softrockit/softrockit.com/logs/softrockit_errors.log'
+    CustomLog '/home/softrockit/softrockit.com/logs/softrockit_accesses.log' combined
+
+    <Directory '/home/softrockit/softrockit.com'>
+            Options FollowSymLinks
+            AllowOverride None
+            Order allow,deny
+            Deny from all
+    </Directory>
+    <Directory '/home/softrockit/softrockit.com/controllers'>
+            <Files Main.php>
+                    Allow from all
+            </Files>
+    </Directory>
+    <Directory '/home/softrockit/softrockit.com/views/images'>
+            Allow from All
+    </Directory>
+    <Directory '/home/softrockit/softrockit.com/views/flash'>
+            Allow from All
+    </Directory>
+
+    ErrorDocument 400 /error/HTTP_BAD_REQUEST.html.var
+    ErrorDocument 401 /error/HTTP_UNAUTHORIZED.html.var
+    ErrorDocument 403 /error/HTTP_FORBIDDEN.html.var
+    ErrorDocument 404 /error/HTTP_NOT_FOUND.html.var
+    ErrorDocument 405 /error/HTTP_METHOD_NOT_ALLOWED.html.var
+    ErrorDocument 408 /error/HTTP_REQUEST_TIME_OUT.html.var
+    ErrorDocument 410 /error/HTTP_GONE.html.var
+    ErrorDocument 411 /error/HTTP_LENGTH_REQUIRED.html.var
+    ErrorDocument 412 /error/HTTP_PRECONDITION_FAILED.html.var
+    ErrorDocument 413 /error/HTTP_REQUEST_ENTITY_TOO_LARGE.html.var
+    ErrorDocument 414 /error/HTTP_REQUEST_URI_TOO_LARGE.html.var
+    ErrorDocument 415 /error/HTTP_SERVICE_UNAVAILABLE.html.var
+    ErrorDocument 500 /error/HTTP_INTERNAL_SERVER_ERROR.html.var
+    ErrorDocument 501 /error/HTTP_NOT_IMPLEMENTED.html.var
+    ErrorDocument 502 /error/HTTP_BAD_GATEWAY.html.var
+    ErrorDocument 503 /error/HTTP_SERVICE_UNAVAILABLE.html.var
+    ErrorDocument 506 /error/HTTP_VARIANT_ALSO_VARIES.html.var
+
+    SSLEngine on
+    SSLCertificateKeyFile '/home/softrockit/softrockit.com/configurations/httpd/domains/softrockit.key'
+    SSLCertificateFile '/home/softrockit/softrockit.com/configurations/httpd/domains/softrockit.crt'
+    SSLCertificateChainFile '/home/softrockit/softrockit.com/configurations/httpd/domains/gd_bundle.crt'
+</VirtualHost>
+
+<VirtualHost 204.15.86.56:80>
+     ServerName www.softrockit.com
+    ServerAlias softrockit.com
+    ServerAlias softrockit
+    ServerAdmin webmaster@softrockit.com
+
+    ErrorLog '/home/softrockit/softrockit.com/logs/softrockit_errors.log'
+    CustomLog '/home/softrockit/softrockit.com/logs/softrockit_accesses.log' combined
+
+    DocumentRoot '/home/softrockit'
+
+    AliasMatch '^(/images/.*\.(jpg|jpeg|gif|png|ico))$' '/home/softrockit/softrockit.com/views$1'
+    AliasMatch '^(/flash/.*\.(swf))$' '/home/softrockit/softrockit.com/views$1'
+    #AliasMatch '^(/?hlpImages/.*\.(jpg|jpeg|gif|png))$' '/home/softrockit/softrockit.com/views/contents/images/$1'
+    #Alias '/error/' '/home/softrockit/softrockit.com/views/actions/errors/'
+    AliasMatch ".*" '/home/softrockit/softrockit.com/controllers/Main.php'
+
+    <Directory '/home/softrockit/softrockit.com/'>
+        Options FollowSymLinks
+        AllowOverride None
+        Order allow,deny
+        Deny from all
+    </Directory>
+    <Directory '/home/softrockit/softrockit.com/controllers'>
+        <Files Main.php>
+            Allow from all
+        </Files>
+    </Directory>
+#    <Directory '/home/softrockit/softrockit.com/views/actions'>
+#        <Files main.php>
+#            Allow from all
+#        </Files>
+#    </Directory>
+#    <Directory '/home/softrockit/softrockit.com/views/actions/errors'>
+#        Allow from all
+#        Options IncludesNoExec
+#        AddHandler type-map var
+#        LanguagePriority en es de fr
+#        ForceLanguagePriority Prefer Fallback
+#    </Directory>
+    <Directory '/home/softrockit/softrockit.com/views/images'>
+        Allow from All
+    </Directory>
+    <Directory '/home/softrockit/softrockit.com/views/flash'>
+        Allow from All
+    </Directory>
+
+    ErrorDocument 400 /error/HTTP_BAD_REQUEST.html.var
+    ErrorDocument 401 /error/HTTP_UNAUTHORIZED.html.var
+    ErrorDocument 403 /error/HTTP_FORBIDDEN.html.var
+    ErrorDocument 404 /error/HTTP_NOT_FOUND.html.var
+    ErrorDocument 405 /error/HTTP_METHOD_NOT_ALLOWED.html.var
+    ErrorDocument 408 /error/HTTP_REQUEST_TIME_OUT.html.var
+    ErrorDocument 410 /error/HTTP_GONE.html.var
+    ErrorDocument 411 /error/HTTP_LENGTH_REQUIRED.html.var
+    ErrorDocument 412 /error/HTTP_PRECONDITION_FAILED.html.var
+    ErrorDocument 413 /error/HTTP_REQUEST_ENTITY_TOO_LARGE.html.var
+    ErrorDocument 414 /error/HTTP_REQUEST_URI_TOO_LARGE.html.var
+    ErrorDocument 415 /error/HTTP_SERVICE_UNAVAILABLE.html.var
+    ErrorDocument 500 /error/HTTP_INTERNAL_SERVER_ERROR.html.var
+    ErrorDocument 501 /error/HTTP_NOT_IMPLEMENTED.html.var
+    ErrorDocument 502 /error/HTTP_BAD_GATEWAY.html.var
+    ErrorDocument 503 /error/HTTP_SERVICE_UNAVAILABLE.html.var
+    ErrorDocument 506 /error/HTTP_VARIANT_ALSO_VARIES.html.var
+</VirtualHost>

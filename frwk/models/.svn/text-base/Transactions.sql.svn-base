@@ -1,0 +1,45 @@
+CREATE TABLE `propertyinfo` (
+  `property_info_id` bigint(20) unsigned NOT NULL auto_increment,
+  `class_id` BIGINT UNSIGNED NOT NULL,
+  `value` double default NULL,
+  `beds` int default NULL,
+  `baths` int default NULL,
+  `year` int default NULL,
+  `garages` int default NULL,
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`property_info_id`),
+  KEY `class_id` (`class_id`),
+  KEY `value` (`value`),
+  KEY `beds` (`beds`),
+  KEY `baths` (`baths`),
+  KEY `year` (`year`),
+  KEY `garages` (`garages`),
+  KEY `bedsbaths` (`beds`,`baths`),
+  KEY `valuebedsbaths` (`value`, `beds`, `baths`),
+  KEY `created` (`created`)
+) ENGINE=INNODB AUTO_INCREMENT=1000 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE transactions (
+   transaction_id BIGINT UNSIGNED NOT NULL auto_increment,
+   class_id BIGINT UNSIGNED,
+   quantity double,
+   transaction_value double,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (transaction_id),
+   KEY class_id (class_id),
+   KEY idquantity (transaction_id,quantity)
+)ENGINE=INNODB AUTO_INCREMENT=1000 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE transactiontypes (
+   transactiontype_id BIGINT UNSIGNED NOT NULL auto_increment,
+   name varchar(128),
+   description text,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (transactiontype_id),
+   KEY name (name)
+)ENGINE=INNODB AUTO_INCREMENT=1000 DEFAULT CHARSET=latin1;

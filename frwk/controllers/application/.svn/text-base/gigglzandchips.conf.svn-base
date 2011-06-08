@@ -1,0 +1,7 @@
+IP_ADDRESS=204.15.86.56
+SITE_FRWK=/home/src/frwk/*
+SITE_SRC=/home/src/gigglzandchips/*
+SITE_TARGET=/home/gigglzandchips/
+SITE_OWNER=gigglzandchips
+SITE_GROUP=apache
+SITE_DATABASE=gigglzandchips

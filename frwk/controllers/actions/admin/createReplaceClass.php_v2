@@ -1,0 +1,525 @@
+<?
+/// Copyright (C) 2007 Delogen
+/// author: Chad Walling
+/// email: chad@delogen.com
+chdir($cwd = dirname(__FILE__));
+require_once(preg_replace('@(.*)/actions/?.*@i', '$1/', $cwd).'Main.php');
+
+$date = date('Y-m-d H:i:s');
+
+$fname = ($request->hasValue("fname")) ? $request->getValue("fname") : "";
+$lname = ($request->hasValue("lname")) ? $request->getValue("lname") : "";
+$street= ($request->hasValue("street")) ? $request->getValue("street") : "";
+$city  = ($request->hasValue("city")) ? $request->getValue("city") : "";
+$state = ($request->hasValue("state")) ? $request->getValue("state") : "";
+$zip   = ($request->hasValue("zip")) ? $request->getValue("zip") : "";
+$phone = ($request->hasValue("phone")) ? $request->getValue("phone") : "";
+$email = ($request->hasValue("email")) ? $request->getValue("email") : "";
+$classID = ($request->hasValue("class_id")) ? $request->getValue("class_id") : "";
+
+$domain = ($request->hasValue("domain")) ? $request->getValue("domain") : "";
+$login  = ($request->hasValue("username")) ? $request->getValue("username") : "";
+$pass   = ($request->hasValue("pass")) ? $request->getValue("pass") : "";
+$replace = (!empty($classID)) ? TRUE : FALSE;
+
+$logintype=2;
+$error = FALSE;
+
+if(!validEmail($email)) $error[] = "Invalid email";
+if($fname == "") $error[] = "First Name empty";
+if($lname == "") $error[] = "Last Name empty";
+
+if ($classID != "")
+{
+	if(isValidClass($classID))
+	{
+		//error_log("valid classID:  $classID replace set to: $replace");
+		$replace = TRUE;
+	}
+	else
+	{
+		
+		//error_log("Cant update entry. It was not found in the system.");
+		$error[] = "Cant update entry. It was not found in the system.";
+	}
+}
+else
+{
+	//no class_id passed in so make sure when adding a new address it is not alread in the system
+	if(doesEmailExist($email)){
+		$error[] = "Email address not available. Please choose another.";
+	}else{
+		$replace = FALSE;
+	}
+}
+
+if (domainInUse($domain)){
+	$error[] = 'Domain not available.'; 
+}
+
+if (isLoginNameTaken($login)){
+	$error[] = 'Choose a differnt user name.';
+}
+if (testPasswordStrength($pass) < 3){
+	$error[] = 'Password strength error- add more characters and numbers.';
+}
+
+if ($error == FALSE)
+{
+	$classID = createReplaceClassAndEmailAndPhone($classID, $fname, $lname, "1", $email, $phone, $date, $date, $replace);
+	$addID = createReplaceAddressByClassID($classID, $name, $street, $city, $state, $zip, $date, $date, $replace);
+	$domainID = createDomain($classID, $domain);
+	$login_id = createNewLoginAccount($classID, $login, $pass, $logintype, $date, false);
+	$msg="Account Added";
+
+	die($msg);
+}
+else
+{
+	foreach($error as $err){
+		echo $err."\r\n";
+	}
+	exit;
+}
+
+function domainInUse($domain){
+	$bool = FALSE;
+	$d = new Objects("domains");
+	$d->setDomain($domain);
+	$ds = $d->fetch();
+	if ($ds->getdomain_id() != "" ){ $bool = TRUE; }
+	return $bool;
+}
+
+function createDomain($classID, $domain, $replace = FALSE){
+	$domainObj = new Objects("domains");
+	$domainObj->setDomain($domain);
+	$domainObj = $domainObj->insert($replace);
+	$domain_id = $domainObj->getDomain_id();
+	$c_d = new Objects('classes_domains');
+	$c_d->addRow(array($classID, $domain_id));
+	$c_d->insert($replace);
+	return $domain_id;
+}
+
+function isLoginNameTaken($name){
+	if (empty($name)) return false;
+        $logins = new Objects("logins");
+        $logins->setName($name);
+        $logins = $logins->fetch();
+        $id = $logins->getlogin_id();
+	if ($id) return true;
+	return false;
+}	
+
+function createNewLoginAccount($classID, $username, $pass, $logintype, $date, $replace = false){
+		$obj = new Objects("logins");
+        	$obj->setLogintype_id($logintype);
+		$obj->setName($username);
+		$obj->setPassword($pass);
+		$obj->setCreated($date);
+	        $objnew = $obj->insert($replace);
+	        $login_id = $objnew->getLogin_id();
+	        $c_l = new Objects('classes_logins');
+	        $c_l->addRow(array($classID, $login_id));
+	        $c_l->insert($replace);
+		return $login_id;
+}
+
+function isValidClass($classID)
+{
+	$return = FALSE;
+	if ($classID != '')
+	{
+		$class = new Objects("classes");
+		$filters = new Filters();
+		$filters->setTarget($class);
+		$filters->addFilter("class_id", $classID, "classes", "=");
+		$filters->setLimit("1");
+		$class = $class->fetch($filters);
+		$classID = $class->getClass_id();
+		if ($classID != "")
+		{
+			$return = true;
+		}
+	}
+	return $return;
+}
+
+
+function getPhoneNumberIDByClassID($classID)
+{
+	$return = '';
+	if ($classID != '')
+	{
+		$class = new Objects("classes");
+		$filters = new Filters();
+		$filters->setTarget($class);
+		$filters->addFilter("class_id", $classID, "classes", "=");
+		$filters->setLimit("1");
+		$classnew = $class->fetch($filters);
+
+		if ($classnew->getClass_id() != "")
+		{
+			$phones = new Objects("phonenumbers");
+			$c_e = new Objects("classes_phonenumbers");
+			$f = new Filters();
+			$f->setTarget($phones);
+			$f->addJoin($c_e);
+			$f->addJoin($class);
+			$f->setLimit(1);
+			$phones = $phones->fetch($f);
+			$return = $phones->getPhonenumber_id();
+		}
+		else
+		{
+			//error_log("classid:". $classID ."not found");
+		}
+			
+	}
+	return $return;
+}
+
+
+function getEmailAddressIDByClassID($classID)
+{
+	$return = '';
+	if ($classID != '')
+	{
+		$class = new Objects("classes");
+		$filters = new Filters();
+		$filters->setTarget($class);
+		$filters->addFilter("class_id", $classID, "classes", "=");
+		$filters->setLimit("1");
+		$classnew = $class->fetch($filters);
+//	print_r($classnew); exit;
+		$classID = $classnew->getClass_id();
+		if ($classID != "")
+		{
+			$emailAddress = new Objects("emailaddresses");
+			$c_e = new Objects("classes_emailaddresses");
+			$f = new Filters();
+			$f->setTarget($emailAddress);
+			$f->addJoin($c_e);
+			$f->addJoin($classnew);
+			$f->setLimit(1);
+			$emailAddress = $emailAddress->fetch($f);
+		//	print_r($emailAddress);
+			$return = $emailAddress->getEmailaddress_id();
+			//error_log("f(X) getEmailAddressIDByClassID classid:". $classID ." and emailaddress_id: $return");
+		}
+		else
+		{
+			//error_log("f(X) getEmailAddressIDByClassID  classid:". $classID ."not found");
+		}
+			
+	}
+	return $return;
+}
+
+function getAddressIDByClassID($classID)
+{
+	$return = '';
+	if ($classID != '')
+	{
+		$class = new Objects("classes");
+		$filters = new Filters();
+		$filters->setTarget($class);
+		$filters->addFilter("class_id", $classID, "classes", "=");
+		$filters->setLimit("1");
+		$classnew = $class->fetch($filters);
+		
+		if ($classnew->getClass_id() !=  "")
+		{
+			$address = new Objects("addresses");
+			$c_a = new Objects("classes_addresses");
+			$f = new Filters();
+			$f->setTarget($address);
+			$f->addJoin($c_a);
+			$f->addJoin($class);
+			$f->setLimit(1);
+			$address = $address->fetch($f);
+			$return = $address->getAddress_id();
+			//error_log("function getaddressIDbyclassid addressID: $return");
+		}
+		else
+		{
+			//error_log("function getAddressIDByClassID was not passed a valid classID");
+		}
+			
+	}
+	else
+	{
+		//error_log("function getAddressIDByClassID was not passed a classID");
+	}
+	return $return;
+}
+
+//TODO: use request forward
+//or use ajax to call this page
+function createReplaceAddressByClassID(
+	$classID = '',
+	$addresse,
+	$physicalAddress,
+	$city,
+	$state,
+	$zip,
+	$created,
+	$lastMod,
+	$replace = FALSE)
+{
+	if ($classID != "")
+	{
+		$addID = getAddressIDByClassID($classID);
+	}
+	else
+	{
+		//error_log("classid is NULL this function will insert new classID");
+	}
+
+	
+	$address = new Objects('addresses');
+	$address->setAddress_ID($addID);
+	$address->setName($addresse);
+	$address->setStreet($physicalAddress);
+	$address->setCity($city);
+	$address->setState($state);
+	$address->setCode($zip);
+	$address->setCreated($created);
+	$address->setLastModified($lastMod);
+	$address = $address->insert($replace);
+	$addID = $address->getAddress_id();
+	if ($classID != "" && $addID != "")
+	{
+		$c_a = new Objects('classes_addresses');
+		$c_a->addRow(array($classID, $addID));
+		$c_a->insert($replace);
+		//error_log("updating classes_addresses classid: $classID and address_id: $addID");
+	}
+	else
+	{
+		error_log("classid || addressid is NULL this function will fail");
+	}
+	return $addID;
+}
+
+function doesEmailExist($email){
+	$bool = FALSE;
+	if (!empty($email)){
+                $emailaddress = new Objects('emailaddresses');
+		$emailaddress->setEmail($email);
+		$emailaddress = $emailaddress->fetch();
+		if ($emailaddress->getemailaddress_id() != "") $bool = TRUE;
+	}
+	return $bool;
+}
+
+function createReplaceClassAndEmailAndPhone(
+	$classID = '',
+	$fname,
+	$lname,
+	$classtypeID = 1,
+	$email = '',
+	$phonenumberValue = '',
+	$created = '',
+	$lastmod = '',
+	$replace)
+{
+	$created = ($created) ? $created : date('Y-m-d h:i:s');
+	$lastmod = ($lastmod) ? $lastmod : date('Y-m-d h:i:s');
+	$class = new Objects('classes');
+	$class->addRow(array($classID,$fname,'',$lname,'',$created, $lastmod));
+	$class = $class->insert($replace);
+//	print_r($class);
+
+	if ($classID == "")
+	{
+		$classID = $class->getClass_id();
+		//error_log("replace is $replace.  f(x) createReplaceClassAndEmailAndPhone was not passed a so we created a new classid: $classID");
+	}
+	
+	//error_log("replace is $replace.  f(x) createReplaceClassAndEmailAndPhone");
+	if ($classtypeID != "" && $classID != "")
+	{
+		$classtype = new Objects('classes_classtypes');
+		$classtype->addRow(array($classID, $classtypeID ));
+		$classtype->insert($replace);
+
+		//print_r($classtype);
+		if ($email != "")
+		{
+			$emailAddressID = getEmailAddressIDByClassID($classID);
+			//error_log("1st==============emailAddressID: $emailAddressID");
+			$emailaddress = new Objects('emailaddresses');
+			$emailaddress->addRow(array($emailAddressID, $email, $created, $lastmod));
+			$emailaddress = $emailaddress->insert($replace);
+			//print_r($emailaddress);
+			$emailAddressID = $emailaddress->getEmailaddress_id();
+			//error_log("2nd==============emailaddress_id: ".$emailAddressID);
+			if ($emailAddressID != "" )
+			{
+				$c_e = new Objects('classes_emailaddresses');
+				$c_e->addRow(array($classID, $emailAddressID));
+				$c_e->insert($replace);
+				//error_log("f(x) createReplaceClassAndEmailAndPhone update emailaddressID: $emailAddressID");
+			}
+			else
+			{
+				//error_log("f(x) createReplaceClassAndEmailAndPhone did not find a emailaddressID to update");
+			}
+		}
+
+		if ($phonenumberValue != '')
+		{
+			$phonenumberID = getPhoneNumberIDByClassID($classID);
+			$phonenumber = new Objects('phonenumbers');
+			$phonenumber->addRow(array($phonenumberID, $phonenumberValue, $created, $lastmod));
+			$phonenumber = $phonenumber->insert($replace);
+
+			$phonenumberID = $phonenumber->getPhoneNumber_id();
+			if ($phonenumberID != '')
+			{
+				$c_p = new Objects('classes_phonenumbers');
+				$c_p->addRow(array($classID, $phonenumberID));
+				$c_p->insert($replace);
+			}
+		}
+	}
+	return $classID;
+}
+
+
+/**
+Validate an email address.
+Provide email address (raw input)
+Returns true if the email address has the email 
+address format and the domain exists.
+*/
+function validEmail($email)
+{
+   $isValid = true;
+   $atIndex = strrpos($email, "@");
+   if (is_bool($atIndex) && !$atIndex)
+   {
+      $isValid = false;
+   }
+   else
+   {
+      $domain = substr($email, $atIndex+1);
+      $local = substr($email, 0, $atIndex);
+      $localLen = strlen($local);
+      $domainLen = strlen($domain);
+      if ($localLen < 1 || $localLen > 64)
+      {
+         // local part length exceeded
+         $isValid = false;
+      }
+      else if ($domainLen < 1 || $domainLen > 255)
+      {
+         // domain part length exceeded
+         $isValid = false;
+      }
+      else if ($local[0] == '.' || $local[$localLen-1] == '.')
+      {
+         // local part starts or ends with '.'
+         $isValid = false;
+      }
+      else if (preg_match('/\\.\\./', $local))
+      {
+         // local part has two consecutive dots
+         $isValid = false;
+      }
+      else if (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain))
+      {
+         // character not valid in domain part
+         $isValid = false;
+      }
+      else if (preg_match('/\\.\\./', $domain))
+      {
+         // domain part has two consecutive dots
+         $isValid = false;
+      }
+      else if(!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',
+                 str_replace("\\\\","",$local)))
+      {
+         // character not valid in local part unless 
+         // local part is quoted
+         if (!preg_match('/^"(\\\\"|[^"])+"$/',
+             str_replace("\\\\","",$local)))
+         {
+            $isValid = false;
+         }
+      }
+      if ($isValid && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A")))
+      {
+         // domain not found in DNS
+         $isValid = false;
+      }
+   }
+   return $isValid;
+}
+
+
+
+function testPasswordStrength($password)
+{
+    if ( strlen( $password ) == 0 )
+    {
+        return 1;
+    }
+
+    $strength = 0;
+
+    /*** get the length of the password ***/
+    $length = strlen($password);
+
+    /*** check if password is not all lower case ***/
+    if(strtolower($password) != $password)
+    {
+        $strength += 1;
+    }
+    
+    /*** check if password is not all upper case ***/
+    if(strtoupper($password) == $password)
+    {
+        $strength += 1;
+    }
+
+    /*** check string length is 8 -15 chars ***/
+    if($length >= 8 && $length <= 15)
+    {
+        $strength += 1;
+    }
+
+    /*** check if lenth is 16 - 35 chars ***/
+    if($length >= 16 && $length <=35)
+    {
+        $strength += 2;
+    }
+
+    /*** check if length greater than 35 chars ***/
+    if($length > 35)
+    {
+        $strength += 3;
+    }
+    
+    /*** get the numbers in the password ***/
+    preg_match_all('/[0-9]/', $password, $numbers);
+    $strength += count($numbers[0]);
+
+    /*** check for special chars ***/
+    preg_match_all('/[|!@#$%&*\/=?,;.:\-_+~^\\\]/', $password, $specialchars);
+    $strength += sizeof($specialchars[0]);
+
+    /*** get the number of unique chars ***/
+    $chars = str_split($password);
+    $num_unique_chars = sizeof( array_unique($chars) );
+    $strength += $num_unique_chars * 2;
+
+    /*** strength is a number 1-10; ***/
+    $strength = $strength > 99 ? 99 : $strength;
+    $strength = floor($strength / 10 + 1);
+
+    return $strength;
+}
+?>

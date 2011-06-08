@@ -1,0 +1,7 @@
+IP_ADDRESS=204.15.86.56
+SITE_FRWK=/home/src/frwk/*
+SITE_SRC=/home/src/justimagine/*
+SITE_TARGET=/home/justimagine/
+SITE_OWNER=justimagine
+SITE_GROUP=apache
+SITE_DATABASE=classes_db

@@ -1,0 +1,20 @@
+<?
+/// Copyright (C) 2007 Delogen
+/// author: Chad Walling
+/// email: chad@delogen.com
+define('PATH_DELIMETER', "/");       //default linux. For windows make "\"
+define('BASE_DIR', realpath($dir."/../").PATH_DELIMETER);
+define('WEB_ROOT', BASE_DIR);
+define('MODELS', "models"); 
+define('VIEWS', "views");
+define('CONTROLLERS', "controllers");
+define('BASE_PATH_MODELS', WEB_ROOT.MODELS.PATH_DELIMETER);
+define('BASE_PATH_VIEWS', WEB_ROOT.VIEWS.PATH_DELIMETER);
+define('BASE_PATH_CONTROLLERS', WEB_ROOT.CONTROLLERS.PATH_DELIMETER);
+define('BASE_PATH_CONTROLLERS_ACTIONS', WEB_ROOT.CONTROLLERS.PATH_DELIMETER."actions".PATH_DELIMETER);   
+define('CACHE_DIR', "/tmp/cache/");
+define('DEFAULT_FILE_SUFFIX', "php");
+define('DEFAULT_DATABASE', "classes_db");
+define('SESSION_PROTECTED_DIR', "admin");    //all child DIRs will be session protected 
+define('HOST',"delogen")
+?>

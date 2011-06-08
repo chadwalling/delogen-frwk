@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/delogen/!svn/ver/26/trunk/frwk/models/server/http
+END
+URI.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/delogen/!svn/ver/26/trunk/frwk/models/server/http/URI.php
+END
+Session.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/delogen/!svn/ver/2/trunk/frwk/models/server/http/Session.php
+END
+Request.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/delogen/!svn/ver/2/trunk/frwk/models/server/http/Request.php
+END

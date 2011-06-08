@@ -1,0 +1,55 @@
+<?php
+/// Copyright (C) 2007 Delogen
+/// author: Chad Walling
+/// email: chad@delogen.com
+chdir($cwd = dirname(__FILE__));
+require_once(preg_replace('@(.*)/actions/?.*@i', '$1/', $cwd).'Main.php');
+$date = date('Y-m-d H:i:s');
+
+$domain_name = ($request->hasValue("domain_name")) ? $request->getValue("domain_name") : "";
+
+function createFreeDomain($domain_name, $domain_type_id = 3){
+	$replace = NULL;
+	$created = ($created) ? $created : date('Y-m-d h:i:s');
+	$lastmod = ($lastmod) ? $lastmod : date('Y-m-d h:i:s');
+	$domains = new Objects('domains');
+	$domains->addRow(array('', $domain_name, $domain_type_id, $created, $lastmod));
+	$domains = $domains->insert($replace);
+}
+
+
+function isFreeDomainNameAvailable($domain_name){
+	$return = false;
+	$domain_name = trim ($domain_name);
+	if (!empty($domain_name)){
+		$d = Objects("domains");
+		$d->setname();
+		$d = $d->fetch();
+		//check file system if possible
+		if($d->getDomain_id() != ""){
+
+			$return = true;
+		}
+	}
+}
+
+/*
+americasdemise.com
+gigglzandchips.com
+authoritarianpower.com
+jbkitchenbathdesig.com
+webrockit.com
+bronerproductions.com
+delogen.com
+justimaginephotography.com
+microhogs.com
+sexyoverload.com
+wordupjournals.com
+flower-frenzy.com
+killcuteoverload.com
+softrockit.com
+wallingempire.com
+yourtailoredimage.com
+*/
+
+?>

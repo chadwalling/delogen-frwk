@@ -1,0 +1,9 @@
+;copies from top to bottom so the next line will overwrite files found in the previous lines
+IP_ADDRESS      = 204.15.86.5
+SITE_FRWK       = /home/src/frwk/*
+SITE_SRC        = /home/src/softrockit/*
+SITE_TARGET     = /home/softrockitdev/softrockitdev.com/
+SITE_OWNER      = softrockitdev
+SITE_TLD        = com
+SITE_GROUP      = apache
+SITE_DATABASE   = classes_db

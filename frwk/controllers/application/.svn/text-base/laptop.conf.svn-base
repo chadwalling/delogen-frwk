@@ -1,0 +1,6 @@
+IP_ADDRESS=127.0.0.1
+SITE_SRC=/home/src/frwk/*
+SITE_SRC=/home/src/justimagine/*
+SITE_TARGET=/home/justimagine/
+SITE_OWNER=justimagine
+SITE_GROUP=apache

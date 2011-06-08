@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/delogen/!svn/ver/45/trunk/frwk/views
+END
+crossdomain.xml
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/delogen/!svn/ver/2/trunk/frwk/views/crossdomain.xml
+END
+gallery.php
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/delogen/!svn/ver/22/trunk/frwk/views/gallery.php
+END
+layout_main.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/delogen/!svn/ver/11/trunk/frwk/views/layout_main.php
+END
+addUser.phtml
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/delogen/!svn/ver/15/trunk/frwk/views/addUser.phtml
+END
+register.php
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/delogen/!svn/ver/22/trunk/frwk/views/register.php
+END
+Login.phtml
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/delogen/!svn/ver/15/trunk/frwk/views/Login.phtml
+END
+addUser.php
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/delogen/!svn/ver/11/trunk/frwk/views/addUser.php
+END
+galleryShell.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/delogen/!svn/ver/2/trunk/frwk/views/galleryShell.php
+END
+Content.phtml
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/delogen/!svn/ver/22/trunk/frwk/views/Content.phtml
+END
+index.php
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/delogen/!svn/ver/22/trunk/frwk/views/index.php
+END
+login.php
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/delogen/!svn/ver/22/trunk/frwk/views/login.php
+END

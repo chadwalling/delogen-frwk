@@ -1,0 +1,305 @@
+-- MySQL dump 10.11
+--
+-- Host: localhost    Database: classes_db
+-- ------------------------------------------------------
+-- Server version	5.0.37
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `classes_db`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `classes_db` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `classes_db`;
+
+--
+-- Table structure for table `addresses`
+--
+
+DROP TABLE IF EXISTS `addresses`;
+CREATE TABLE `addresses` (
+  `address_id` bigint(20) unsigned NOT NULL auto_increment,
+  `name` varchar(128) default NULL,
+  `street` varchar(128) default NULL,
+  `city` varchar(64) default NULL,
+  `state` varchar(64) default NULL,
+  `code` varchar(32) default NULL,
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`address_id`),
+  KEY `name` (`name`),
+  KEY `street` (`street`),
+  KEY `city` (`city`),
+  KEY `state` (`state`),
+  KEY `code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `addresses`
+--
+
+LOCK TABLES `addresses` WRITE;
+/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
+INSERT INTO `addresses` VALUES (1000,'chad walling','2849 w sunburst way','Lehi','UT','84043','2007-08-29 05:41:54','2007-08-29 05:41:54'),(1040,'Todd walling','2849 w sunburst way','Lehi','UT','84043','2007-09-08 08:37:58','2007-09-08 08:37:58'),(1041,'0','1201 Nathan Dr','Anchorage','AK','99516','2007-09-13 06:29:43','2007-09-13 06:29:43');
+/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classes`
+--
+
+DROP TABLE IF EXISTS `classes`;
+CREATE TABLE `classes` (
+  `class_id` bigint(20) unsigned NOT NULL auto_increment,
+  `name1` varchar(128) default NULL,
+  `name2` varchar(128) default NULL,
+  `name3` varchar(128) default NULL,
+  `name4` varchar(128) default NULL,
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`class_id`),
+  KEY `name1` (`name1`),
+  KEY `name2` (`name2`),
+  KEY `name3` (`name3`),
+  KEY `name4` (`name4`),
+  KEY `name1name3` (`name1`,`name3`),
+  KEY `created` (`created`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `classes`
+--
+
+LOCK TABLES `classes` WRITE;
+/*!40000 ALTER TABLE `classes` DISABLE KEYS */;
+INSERT INTO `classes` VALUES (1000,'Chad','','Walling','','2007-08-29 05:41:54','2007-08-29 05:41:54'),(1008,'Todd','','Walling','','2007-09-08 08:37:58','2007-09-08 08:37:58'),(1009,'Susette','','Walling','','2007-09-13 06:29:43','2007-09-13 06:29:43');
+/*!40000 ALTER TABLE `classes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classes_addresses`
+--
+
+DROP TABLE IF EXISTS `classes_addresses`;
+CREATE TABLE `classes_addresses` (
+  `class_id` bigint(20) unsigned NOT NULL default '0',
+  `address_id` bigint(20) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`class_id`,`address_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `classes_addresses`
+--
+
+LOCK TABLES `classes_addresses` WRITE;
+/*!40000 ALTER TABLE `classes_addresses` DISABLE KEYS */;
+INSERT INTO `classes_addresses` VALUES (1000,1000),(1008,1040),(1009,1041);
+/*!40000 ALTER TABLE `classes_addresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classes_classstatuses`
+--
+
+DROP TABLE IF EXISTS `classes_classstatuses`;
+CREATE TABLE `classes_classstatuses` (
+  `classclassstatus_id` bigint(20) unsigned NOT NULL auto_increment,
+  `class_id` bigint(20) unsigned NOT NULL default '0',
+  `classstatus_id` bigint(20) unsigned NOT NULL default '0',
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`classclassstatus_id`),
+  KEY `classstatus_id` (`classstatus_id`),
+  KEY `class_id` (`class_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `classes_classstatuses`
+--
+
+LOCK TABLES `classes_classstatuses` WRITE;
+/*!40000 ALTER TABLE `classes_classstatuses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classes_classstatuses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classes_classtypes`
+--
+
+DROP TABLE IF EXISTS `classes_classtypes`;
+CREATE TABLE `classes_classtypes` (
+  `class_id` bigint(20) unsigned NOT NULL default '0',
+  `classtype_id` bigint(20) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`class_id`,`classtype_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `classes_classtypes`
+--
+
+LOCK TABLES `classes_classtypes` WRITE;
+/*!40000 ALTER TABLE `classes_classtypes` DISABLE KEYS */;
+INSERT INTO `classes_classtypes` VALUES (1000,1),(1000,6),(1008,1),(1009,1);
+/*!40000 ALTER TABLE `classes_classtypes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classes_emailaddresses`
+--
+
+DROP TABLE IF EXISTS `classes_emailaddresses`;
+CREATE TABLE `classes_emailaddresses` (
+  `class_id` bigint(20) unsigned NOT NULL default '0',
+  `emailaddress_id` bigint(20) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`class_id`,`emailaddress_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `classes_emailaddresses`
+--
+
+LOCK TABLES `classes_emailaddresses` WRITE;
+/*!40000 ALTER TABLE `classes_emailaddresses` DISABLE KEYS */;
+INSERT INTO `classes_emailaddresses` VALUES (1000,1000),(1008,1008),(1009,1009);
+/*!40000 ALTER TABLE `classes_emailaddresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classes_phonenumbers`
+--
+
+DROP TABLE IF EXISTS `classes_phonenumbers`;
+CREATE TABLE `classes_phonenumbers` (
+  `class_id` bigint(20) unsigned NOT NULL default '0',
+  `phonenumber_id` bigint(20) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`class_id`,`phonenumber_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `classes_phonenumbers`
+--
+
+LOCK TABLES `classes_phonenumbers` WRITE;
+/*!40000 ALTER TABLE `classes_phonenumbers` DISABLE KEYS */;
+INSERT INTO `classes_phonenumbers` VALUES (1000,1000),(1008,1008),(1009,1009);
+/*!40000 ALTER TABLE `classes_phonenumbers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classstatuses`
+--
+
+DROP TABLE IF EXISTS `classstatuses`;
+CREATE TABLE `classstatuses` (
+  `classstatus_id` bigint(20) unsigned NOT NULL auto_increment,
+  `name` varchar(128) default NULL,
+  `description` text,
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`classstatus_id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `classstatuses`
+--
+
+LOCK TABLES `classstatuses` WRITE;
+/*!40000 ALTER TABLE `classstatuses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classstatuses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classtypes`
+--
+
+DROP TABLE IF EXISTS `classtypes`;
+CREATE TABLE `classtypes` (
+  `classtype_id` bigint(20) unsigned NOT NULL auto_increment,
+  `name` varchar(128) default NULL,
+  `description` text,
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`classtype_id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `classtypes`
+--
+
+LOCK TABLES `classtypes` WRITE;
+/*!40000 ALTER TABLE `classtypes` DISABLE KEYS */;
+INSERT INTO `classtypes` VALUES (1,'user','A user Classtype','2007-08-29 05:47:20','2007-08-29 05:47:20'),(2,'client','A client Classtype','2007-08-29 05:47:20','2007-08-29 05:47:20'),(3,'lead','A lead Classtype','2007-08-29 05:47:20','2007-08-29 05:47:20'),(4,'test_user','A testuser Classtype','2007-08-29 05:47:20','2007-08-29 05:47:20'),(5,'credit_card','A credit card Classtype','2007-08-29 05:47:20','2007-08-29 05:47:20'),(6,'admin','A admin classtype','0000-00-00 00:00:00','2007-08-31 06:08:38');
+/*!40000 ALTER TABLE `classtypes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `emailaddresses`
+--
+
+DROP TABLE IF EXISTS `emailaddresses`;
+CREATE TABLE `emailaddresses` (
+  `emailaddress_id` bigint(20) unsigned NOT NULL auto_increment,
+  `email` varchar(255) default NULL,
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`emailaddress_id`),
+  KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `emailaddresses`
+--
+
+LOCK TABLES `emailaddresses` WRITE;
+/*!40000 ALTER TABLE `emailaddresses` DISABLE KEYS */;
+INSERT INTO `emailaddresses` VALUES (1000,'chadwalling@gmail.com','2007-08-29 05:41:54','2007-08-29 05:41:54'),(1008,'todd_walling@gmail.com','2007-09-08 08:37:58','2007-09-08 08:37:58'),(1009,'susettewalling@hotmail.com','2007-09-13 06:29:43','2007-09-13 06:29:43');
+/*!40000 ALTER TABLE `emailaddresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `phonenumbers`
+--
+
+DROP TABLE IF EXISTS `phonenumbers`;
+CREATE TABLE `phonenumbers` (
+  `phonenumber_id` bigint(20) unsigned NOT NULL auto_increment,
+  `number` varchar(255) default NULL,
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`phonenumber_id`),
+  KEY `number` (`number`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `phonenumbers`
+--
+
+LOCK TABLES `phonenumbers` WRITE;
+/*!40000 ALTER TABLE `phonenumbers` DISABLE KEYS */;
+INSERT INTO `phonenumbers` VALUES (1000,'801-358-0644','2007-08-29 05:41:54','2007-08-29 05:41:54'),(1008,'801-472-9537','2007-09-08 08:37:58','2007-09-08 08:37:58'),(1009,'907-360-8338','2007-09-13 06:29:43','2007-09-13 06:29:43');
+/*!40000 ALTER TABLE `phonenumbers` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2007-09-14 22:02:06

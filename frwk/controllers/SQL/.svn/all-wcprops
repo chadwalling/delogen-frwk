@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/delogen/!svn/ver/118/trunk/frwk/controllers/SQL
+END
+Connector.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/delogen/!svn/ver/26/trunk/frwk/controllers/SQL/Connector.php
+END
+ServiceSQL.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/delogen/!svn/ver/118/trunk/frwk/controllers/SQL/ServiceSQL.php
+END
+Connector.ini
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/delogen/!svn/ver/89/trunk/frwk/controllers/SQL/Connector.ini
+END
+ServiceSQLClass.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/delogen/!svn/ver/2/trunk/frwk/controllers/SQL/ServiceSQLClass.php
+END
+Filters.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/delogen/!svn/ver/2/trunk/frwk/controllers/SQL/Filters.php
+END

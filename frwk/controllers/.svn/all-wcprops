@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/delogen/!svn/ver/133/trunk/frwk/controllers
+END
+recaptchalib.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/delogen/!svn/ver/11/trunk/frwk/controllers/recaptchalib.php
+END
+Main.php
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/delogen/!svn/ver/2/trunk/frwk/controllers/Main.php
+END
+ConcreteMain.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/delogen/!svn/ver/142/trunk/frwk/controllers/ConcreteMain.php
+END
+AbstractMain.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/delogen/!svn/ver/2/trunk/frwk/controllers/AbstractMain.php
+END

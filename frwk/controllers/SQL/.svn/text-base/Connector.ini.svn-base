@@ -1,0 +1,6 @@
+<?php
+define('PASS','My$Q_r0ot=69');
+define('SERVER','localhost');
+define('USER','root');
+define('DB','classes_db');
+?>

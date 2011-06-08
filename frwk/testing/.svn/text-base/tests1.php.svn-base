@@ -1,0 +1,592 @@
+<?
+define("HI", "hi");
+`echo asdf`;
+exit;
+chdir($cwd = dirname(__FILE__));
+require_once(preg_replace('@(.*)/testing/?.*@i', '$1/', $cwd).'controllers/Main.php');
+
+define(HI, "hi");
+`echo HI`;
+
+exit;
+$obj = new Object();
+$obj->addField("root");
+
+$obj->addValues("root", array("login","transaction"));
+
+print_r($obj);
+
+exit;
+
+
+
+
+
+
+//$dir = dirname(__FILE__);
+//require_once(dirname(__FILE__).'/filesystem/FileSystemEnvironment.php');
+IncludeController("filesystem/File.php"); //TODO this should be a model
+IncludeModel('server/http/URI.php' );
+IncludeModel('Objects.php');
+
+///mysql -uroot -p'My$Q_r0ot=12' < /home/chad/cvs/binghamwalling/controllers/ObjectsDatabase.sql
+///tar -czvf  /home/chad/Desktop/delogen.1-10-07.tar.gz /home/chad/cvs/binghamwalling/
+
+/* step 1. get an objects fields by doing this step:
+		SELECT
+			name
+		FROM
+			objectfields
+		WHERE
+			objectfield_id in
+		(SELECT
+			object2_id as objectfield_id
+		FROM
+			links
+		WHERE
+			object_id=1 AND objectlinktype2_id=2);
+// 
+// step 2. get the field types
+// step 3. get the fields values
+
+
+	(SELECT
+		object2_id
+	FROM
+		links
+	where objectlinktype_id=6)
+		UNION ALL
+	(SELECT
+		link_id
+	FROM
+		links
+	WHERE
+	object_id=1 AND objectlinktype2_id=2)
+
+
+
+
+
+
+
+
+
+SELECT
+	texts.object_id as primarykey, objectlinktype2_id as objecttable, texts.value, texts.description
+FROM
+	links,texts
+WHERE
+	link_id in
+	(SELECT
+		object2_id
+	FROM
+		links
+	WHERE
+		object_id in (SELECT
+					link_id
+				FROM
+					links
+				WHERE
+					object_id=1 AND objectlinktype2_id=2
+				)
+	AND objectlinktype_id=6
+	)
+AND objectlinktype_id=2
+AND links.object2_id=texts.text_id
+
+
+///this join will get object_id $ field table and ids
+///SELECT DISTINCT
+///	l.object2_id as id, l.objectlinktype2_id as objecttype
+///FROM
+///	links l
+///JOIN
+///	links l2
+///ON
+///	(l.object2_id = l2.object_id AND l.objectlinktype2_id= l2.objectlinktype_id) AND l.object_id=1
+///end
+		l.object_id as guid, t.value, f.name
+
+SET @table = 'texts';
+
+SELECT
+	l.object_id as guid, f.name, t.value
+FROM
+	links l
+JOIN
+	links l2
+ON
+	(l.object2_id = l2.object_id) AND (l.objecttype2_id= l2.objecttype_id) AND (l.object_id=1)
+JOIN
+	objecttypes otype
+ON
+	(l.objecttype2_id=otype.objecttype_id)
+JOIN
+	fields f
+ON
+	(l.object2_id=f.field_id) AND l.objecttype2_id=2
+JOIN
+	texts t
+ON
+	(l.object2_id=t.text_id);
+
+
+
+
+SELECT
+	l1.link_id, l1.object2_id,t.*
+FROM
+	links l1
+JOIN
+	links l2
+ON
+	(l1.object_id = l2.link_id) AND l1.object_id=1
+JOIN links l3
+ON
+	(l2.object_id = l3.link_id) AND l3.objectlinktype_id=6
+JOIN 
+	texts t
+ON
+	(l3.object2_id=t.text_id) AND l1.objectlinktype_id=6
+WHERE
+
+l1.objectlinktype2_id=2
+
+
+	
+	
+
+WHERE
+	link_id in
+(
+	SELECT
+		object2_id
+	FROM
+		links
+	WHERE
+		object_id in (SELECT
+					link_id
+				FROM
+					links
+				WHERE
+					object_id=1 AND objectlinktype2_id=2
+				)
+		AND objectlinktype_id=6
+)
+AND objectlinktype_id=2
+AND links.object2_id=texts.text_id
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT
+	l1.*, o_f.name
+FROM
+	links l1
+JOIN
+	links l2
+ON
+	(l1.object_id = l2.link_id)
+JOIN
+	links l3
+ON
+	(l3.link_id = l1.object2_id)
+JOIN
+	objectfields o_f
+ON
+	(o_f.objectfield_id = l1.object2_id)
+
+WHERE
+	(l1.object_id=1 AND l1.objectlinktype2_id=3)
+	OR
+	(l2.objectlinktype_id=6)
+	AND
+	(l3.objectlinktype_id=2);
+   
+   
+/*
+SELECT
+	securities.security_id,securitytypes.description
+FROM
+	securities
+INNER JOIN
+	securities_securitytypes
+ON
+	securities.security_id = securities_securitytypes.security_id
+INNER JOIN
+	securitytypes 
+ON 
+	securities_securitytypes.securitytype_id = securitytypes.securitytype_id;*/
+
+//pass in objectID and linktype
+// SELECT
+// 	a.object_id,b.objectlinktype_id, c.name
+// FROM
+// 	objects as a
+// INNER JOIN
+// 	links as b
+// ON
+// 	b.objectlinktype_id = a.object_id
+// INNER JOIN
+// 	objectlinktypes as c
+// ON 
+// 	 b.objectlinktype_id = c.objectlinktype_id
+// where 
+// 	c.objectlinktype_id=2 and a.object_id=2;
+//2 is objectfields
+
+/*
+select stuff
+from A
+inner join B on A.id = B.Aid
+inner join C on B.id = C.Bid
+inner join D on C.id = D.Cid*/
+
+// $dir = dirname(__FILE__);
+// echo realpath($dir."/../");
+// exit;
+// 
+// $d = "key function";
+// $str = preg_replace('/(\s+)/', '\\\$1', $d);
+// echo $str;
+// exit;
+
+//$object = "person";
+//$objID = getObjectIDByName($object);
+$vObj = new Objects();
+$persons = new Objects('objectsdatabase', 'links');
+//$persons->setFields(array("name"));
+$ret = $persons->sql("
+		SELECT
+			name
+		FROM
+			objectfields
+		WHERE
+			objectfield_id in
+		(SELECT
+			object2_id as objectfield_id
+		FROM
+			links
+		WHERE
+			object_id=1 AND objectlinktype2_id=2)
+		");
+while ($row = mysql_fetch_assoc($ret))
+{
+	print_r($row);
+}
+
+exit;
+$linkObj = getObjectFieldsByObjectID(1, $vObj);
+print_r($linkObj); exit;
+
+$o = getObjectValueByFieldIDAndDataTypeID($linkObj, $vObj);
+print_r($o);
+exit;
+//EXAMPLE v1.1 latest
+//we setfields then we can fetch by passing in the field=value pair then
+// we can loop on the results
+//must setfields first then have = number of fields to values to retrieve
+
+
+// joins(
+//           $destinationFields = array(),
+//           $tables = array(),
+//           $fieldValue = array($field, $value),
+//           $unionOrIntersection )
+
+$ob = new Objects('objectsdatabase', 'objects');
+//$ob->setFields(array('object_id'));
+echo "AFDAFS"; print_r($ob);
+exit;
+
+$obfields = new Objects('objectsdatabase', 'objectfields');
+
+$obfields->setFields(array('name','object_id'));
+//$obfields->addValues('object_id', '1');
+//$obfields->fetch(array('object_id'), array('1'));
+
+
+$obfields->joins(array('name'), array('objectfields','objects'), array('object_id', '1'), 'and');
+
+
+//$obfields->joins(array('name'), array('objectfields','objects'), $ob, 'and');
+//todo:
+//$obfields->joins(array('name', 'description'), array($ob, $obfields ), array('object_id'), 'and');
+exit;
+
+
+// 1. function getFields(obj, field)
+// ex: select * from associations where object_id=3 and associationobjectlink2_id=2;
+// select * from objectfields where objectfield_id=(select object2_id from links where object_id=1 and objectlinktype2_id=2);
+// 
+// 2. function getAssociationIdByObjValByObjField(objID, objectlink = 2)
+// select object2_id as association_id from associations where object_id in (select association_id from associations where object_id=3 and associationobjectlink2_id=2);
+// 
+// 
+// 3.
+// select object2_id from associations where object_id in (select association_id from associations where object_id=3 and associationobjectlink2_id=2)
+// 
+// 
+// function getObjFieldValue(objectID, associationobjectlink2_id = objvalue(2), )
+// select object2_id from associations where associationobjectlink2_id=1 AND association_id=(select object2_id from associations where object_id in (select association_id from associations where object_id=3 and associationobjectlink2_id=2));
+// 
+// function getObjectValueByAssociationId(objId, assId)
+// //get objF -> assoc -> objValue
+// select objectvalue from objectvalues where objectvalue_id=(select object2_id from associations where associationobjectlink2_id=1 AND association_id=(select object2_id from associations where object_id in (select association_id from associations where object_id=3 and associationobjectlink2_id=2)));
+// 
+
+
+/**
+select objectfields.name from objects, objectfields where objects.object_id=objectfields.object_id and objects.object_id=1; 
+
+select * from objectvalues where objectvalue_id in (select object_id  from associations where associationobjectlink_id=2);
+
+select * from objectvalues where object_id=1 and objectvalue_id in (select object_id  from associations where associationobjectlink_id=2);
+
+
+how to add an object(2 house) field to the object
+insert into associations values ('', 2, 5, 6, 2, now(), now() );
+
+
+select * from associations where object_id in (1,2,3,4) and associationobjectlink2_id=1;
+*/
+
+/** 
+to get field value key pair
+1.
+     select objectfield_id from objects, objectfields where objects.object_id=objectfields.object_id and objects.object_id=1;
+2.
+     select object2_id from associations where object_id in (select objectfield_id from objects, objectfields where objects.object_id=objectfields.object_id and objects.object_id=1) and associationobjectlink2_id=1;
+3.
+     select * from objectvalues where objectvalue_id in (select object2_id from associations where object_id in (1,2,3,4) and associationobjectlink2_id=1);
+
+
+ select * from objectvalues where objectvalue_id in (select object2_id from associations where object_id in (select objectfield_id from objects, objectfields where objects.object_id=objectfields.object_id and objects.object_id=1)); 
+
+select * from objectvalues where objectvalue_id in (select object2_id from associations where object_id in (select objectfield_id from objects, objectfields where objects.object_id=objectfields.object_id and objects.object_id=2)); 
+
+
+
+
+//get object_id=* fields based on object id and passing in field objectlinktype
+then get the fields data type
+
+select * from links where objectlinktype_id=2 and object_id=1;
+
+
+//know which datatype we have now or which table holds the value
+select name from objectlinktypes where objectlinktype_id =(select objectlinktype2_id from links where objectlinktype_id=2 and object_id=1);
+
+select l.object2_id,l.objectlinktype2_id from links as l  where l.objectlinktype_id=2 and l.object_id=1;
+maybe store table name and id in object
+select * from objectlinktypes where objectlinktype_id=
+
+
+// if we know objectfield type(table) then we can get the value.
+select * from texts where text_id = (select object2_id from links where objectlinktype_id=2 and object_id=1);
+*/
+
+
+
+
+
+/*
+get objvalues relationsships
+select * from associations where associationobjectlink_id=1 and associationobjectlink2_id=1;
+ select * from objectvalues where objectvalue_id in (select object_id from associations where associationobjectlink_id=1 and associationobjectlink2_id=1);
+ select * from objectvalues where objectvalue_id in (select object2_id from associations where associationobjectlink_id=1 and associationobjectlink2_id=1);
+
+get objvalue relationship:
+select object_id,object2_id from associations where associationobjectlink_id=1 and associationobjectlink2_id=1;*/
+
+
+
+function getObjectIDByName($object_name, $vObj = '')
+{
+     $error = "Missing Parameter";
+     if ($object_name)
+     {
+          $obj = new Objects("objectsdatabase", "objects");
+          $obj->setFields(array('object_id', 'name'));
+          $obj->fetch(array('name'), array($object_name));
+          $returnVal = $obj->getValues("object_id", 0);
+          echo $returnVal; exit;
+     }
+     else
+     {
+          $returnVal = $error;
+     }
+     return $returnVal;
+}
+
+
+function getObjectlinktypeNameByID($id, $vObj = '')
+{
+     $returnVal = "Missing Parameter";
+     $id = (is_array($id)) ? $id : array($id);
+     if (count($id) > 0)
+     {
+          $obj = new Objects("objectsdatabase", "objectlinktypes");
+          $obj->setFields(array('objectlinktype_id', 'name'));
+          //$obj->fetch_v1(array('objectlinktype_id'), $id);
+          
+          $returnVal = $obj->getValues("name");
+     }
+     else
+     {
+          $returnVal = $error;
+     }
+     return $returnVal;
+}
+
+function getObjectNameByID($id, $vObj = '')
+{
+     $error = "Missing Parameter";
+     if ($id)
+     {
+          $obj = new Objects("objectsdatabase", "objects");
+          $obj->setFields(array('object_id', 'name'));
+          $obj->fetch(array('object_id'), array($id));
+          $returnVal = $obj->getValues("name", 0);
+     }
+     else
+     {
+          $returnVal = $error;
+     }
+     return $returnVal;
+}
+/*
+get objectfield IDs and data type
+select object2_id,objectlinktype2_id from links where objectlinktype_id=2 and object_id=1;
+
+*/
+//buildObjectFields
+function getObjectFieldsByObjectID($object_id, &$vObj = FALSE)
+{
+     $limit = "1000";
+     $error = "Missing Parameter";
+     
+     if ($object_id)
+     {
+		$obj = new Objects("objectsdatabase", "links");
+		$obj->setFields(array('object2_id', 'objectlinktype2_id'));
+		//print_r($obj->object2_id()); exit;
+		//print_r($obj); exit;
+		$obj->fetch_v1(array('objectlinktype_id', 'object_id'), array("2", $object_id)); //array1 is fields array2 is values; should also take a object data type
+		$vObjFields = $obj->getValues("object2_id");
+		$vObjFieldsType = $obj->getValues("objectlinktype2_id");
+		$fieldNames = getObjectlinktypeNameByID($vObjFieldsType, $vObj);
+print_r($fieldNames); exit;
+		if ($vObj !== FALSE)
+		{
+			$vObj = new Data();
+			$vObjName = getObjectNameByID($object_id);
+			$vObj->setName($vObjName);
+			$vObj->addFields(array('field_id','type'));
+			$vObj->addValues('field_id', $vObjFields);
+			
+			$vObj->addValues('type', $fieldNames);
+		}
+		return $vObj;
+	}
+	else
+	{
+		return $error;
+	}
+}
+
+
+
+/*
+get objectfield IDs and data type
+select object2_id,objectlinktype2_id from links where objectlinktype_id=2 and object_id=1;
+
+*/
+function getObjectValueByFieldIDAndDataTypeID($links, &$vObj = FALSE)
+{
+     $limit = "1000";
+     $error = "Missing Parameter";
+     if (is_object($links))
+     {
+          $dataTypeObj = $links->getValues("objectlinktype2_id");
+          
+          $dataTypeTableObj = new Objects('objectsdatabase', "objectlinktypes");
+          $dataTypeTableObj->setFields(array("name"));
+          $dataTypeObj = (is_array($dataTypeObj) ? $dataTypeObj: array($dataTypeObj)); print_r($dataTypeObj); exit;
+          $dataTypeTableObj->fetch( array("objectlinktype_id", "objectlinktype_id"), $dataTypeObj );
+          //print_r($dataTypeTableObj);
+          $dataTypeTableName = $dataTypeTableObj->getValues("name", 0);
+          $idField = substr($dataTypeTableName, 0, strlen($dataTypeTableName)-1)."_id";
+          $idVal = $links->getValues("object2_id", 0);
+          $obj = new Objects("objectsdatabase", $dataTypeTableName);
+          $obj->setFields(array($idField, "value"));
+          $obj->fetch(array($idField), array($idVal), $limit); //array1 is fields array2 is values; should also take a object data type
+          if ($vObj !== FALSE)
+          {
+ 		$vObj->setFields($idField);
+		$vObj->addValues($idField, $idVal);
+		//print_r($vObj); exit;
+          }
+          return $obj;
+     }
+     else
+     {
+          $returnVal = $error;
+     }
+     return $returnVal;
+}
+// function SwapRowsAndColumns(
+// 	$array)
+// {
+// 	$result = array();
+// 	if (count($array))
+// 	{
+// 		while (list($rowKey, $rowValue) = each($array))
+// 		{
+// 			$i = 0;
+// 			while (list($columnKey, $columnValue) = each($rowValue))
+// 			{
+// 				if (isset($columnValue))
+// 				{
+// 					if (! is_array($result[$i]))
+// 					{
+// 						$result[$i] = array();
+// 					}
+// 
+// 					$result[$i][] = $columnValue;
+// 				}
+// 
+// 				$i++;
+// 			}
+// 		}
+// 	}
+// 
+// 	return $result;
+// }
+
+
+
+$destinationFields = array();
+$tables = array();
+$fieldsForJoin = array();
+
+$ob = new Objects('objectsdatabase', 'objects');
+$ob->setFields(array('object_id', 'name', 'description'));
+$ob->fetch(array('name'), array('person')); //field, value
+$ob->fetch(array('object_id'), array('2'));
+for($i = 0; $i < $ob->getCount(); $i++)
+{
+     echo "name:"; echo $ob->getValues('name',$i);
+     echo "\n";
+}
+
+?>

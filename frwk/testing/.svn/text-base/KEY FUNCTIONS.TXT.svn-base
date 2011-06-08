@@ -1,0 +1,20 @@
+KEY FUNCTIONS FOR GETTING OBJECTFIELDS OBJECTVALUES 
+
+1. function getFields(obj, field)
+ex: select * from associations where object_id=3 and associationobjectlink2_id=2;
+select * from objectfields where objectfield_id=(select object2_id from associations where object_id=3 and associationobjectlink2_id=2);
+
+2. function getAssociationIdByObjValByObjField(objID, objectlink = 2)
+select object2_id as association_id from associations where object_id in (select association_id from associations where object_id=3 and associationobjectlink2_id=2);
+
+
+3.
+select object2_id from associations where object_id in (select association_id from associations where object_id=3 and associationobjectlink2_id=2)
+
+
+function getObjFieldValue(objectID, associationobjectlink2_id = objvalue(2), )
+select object2_id from associations where associationobjectlink2_id=1 AND association_id=(select object2_id from associations where object_id in (select association_id from associations where object_id=3 and associationobjectlink2_id=2));
+
+function getObjectValueByAssociationId(objId, assId)
+//get objF -> assoc -> objValue
+select objectvalue from objectvalues where objectvalue_id=(select object2_id from associations where associationobjectlink2_id=1 AND association_id=(select object2_id from associations where object_id in (select association_id from associations where object_id=3 and associationobjectlink2_id=2)));

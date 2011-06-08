@@ -1,0 +1,12 @@
+ Domain Name: 	softrockit.com
+
+This is a global key. It will work across all domains.
+Public Key: 	6Le_q74SAAAAAINoYl0ZMT8sa10cNQtLwcbbZEAo
+
+Use this in the JavaScript code that is served to your users
+Private Key: 	6Le_q74SAAAAAMC1DtBcBrIDcbCCYn9XX8wr5fNp
+
+Use this when communicating between your server and our server. Be sure to keep it a secret.
+
+
+for recaptcha

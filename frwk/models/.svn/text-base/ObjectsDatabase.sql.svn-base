@@ -1,0 +1,367 @@
+-- # Copyright (C) 2007 Delogen
+-- CREATE DATABASE objectsdatabase;
+-- USE objectsdatabase;
+-- GRANT SELECT, INSERT, UPDATE, DELETE ON objectsdatabase.* TO 'root'@'localhost' IDENTIFIED BY 'My$Q_r0ot=12';
+-- 
+CREATE TABLE globals
+(
+   global_id BIGINT UNSIGNED NOT NULL auto_increment,
+   name varchar(128),
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (global_id)
+);
+CREATE TABLE guids
+(
+   guid_id BIGINT UNSIGNED NOT NULL auto_increment,
+   objecttype_id BIGINT UNSIGNED,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (guid_id),
+   KEY objecttype_id (objecttype_id)
+);
+-- 
+CREATE TABLE objecttypes
+(
+   objecttype_id BIGINT UNSIGNED NOT NULL auto_increment,
+   name varchar(128),
+   description text,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (objecttype_id)
+);
+-- 
+-- CREATE TABLE objects_objecttypes
+-- (
+--    object_id BIGINT UNSIGNED NOT NULL,
+--    objecttype_id BIGINT UNSIGNED NOT NULL,
+--    PRIMARY KEY (object_id, objecttype_id)
+-- );
+-- 
+CREATE TABLE links
+(
+   link_id BIGINT UNSIGNED NOT NULL auto_increment,
+   global_id BIGINT UNSIGNED,
+   object_id BIGINT UNSIGNED,
+   objecttype_id BIGINT UNSIGNED,
+   object2_id BIGINT UNSIGNED,
+   objecttype2_id BIGINT UNSIGNED,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (link_id),
+   KEY global_id (global_id),
+   KEY object_id (object_id),
+   KEY objecttype_id (objecttype_id),
+   KEY object2_id (object2_id),
+   KEY objecttype2_id (objecttype2_id)
+);
+-- 
+-- CREATE TABLE associations_associationtypes
+-- (
+--    association_id BIGINT UNSIGNED NOT NULL,
+--    associationtype_id BIGINT UNSIGNED NOT NULL,
+--    PRIMARY KEY (association_id, associationtype_id),
+--    KEY associationtype_id (associationtype_id, association_id)
+-- );
+-- 
+-- CREATE TABLE associationtypes
+-- (
+--    associationtype_id BIGINT UNSIGNED NOT NULL auto_increment,
+--    name varchar(128),
+--    description text,
+--    created datetime,
+--    lastmodified timestamp NOT NULL,
+--    PRIMARY KEY (associationtype_id)
+-- );
+-- 
+-- CREATE TABLE object_objectfields
+-- (
+--    object_id BIGINT UNSIGNED NOT NULL,
+--    objectfields_id BIGINT UNSIGNED NOT NULL,
+--    PRIMARY KEY (object_id, objectfields_id)
+-- );
+-- 
+CREATE TABLE fields
+(
+   field_id BIGINT UNSIGNED NOT NULL auto_increment,
+   name varchar(128),
+   description text,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (field_id)
+);
+-- 
+-- CREATE TABLE objectfields_objectfieldtypes
+-- (
+--    objectfields_id BIGINT UNSIGNED NOT NULL,
+--    objectfieldtype_id BIGINT UNSIGNED NOT NULL,
+--    PRIMARY KEY (objectfields_id, objectfieldtype_id)
+-- );
+-- 
+-- CREATE TABLE objectfieldtype
+-- (
+--    objectfieldtype_id BIGINT UNSIGNED NOT NULL auto_increment,
+--    name varchar(128),
+--    description text,
+--    created datetime,
+--    lastmodified timestamp NOT NULL,
+--    PRIMARY KEY (objectfieldtype_id)
+-- );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- #version 2============================================================================================
+CREATE DATABASE objectsdatabase;
+USE objectsdatabase;
+GRANT SELECT, INSERT, UPDATE, DELETE ON objectsdatabase.* TO 'root'@'localhost' IDENTIFIED BY 'My$Q_r0ot=69';
+
+CREATE TABLE objects 
+(
+   object_id BIGINT UNSIGNED NOT NULL auto_increment,
+   name varchar(128),
+   description text,
+   objecttype_id BIGINT UNSIGNED,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (object_id),
+   KEY name (name),
+   KEY object_id (object_id),
+   KEY objecttype_id (objecttype_id)
+);
+
+CREATE TABLE objecttypes 
+(
+   objecttype_id BIGINT UNSIGNED NOT NULL auto_increment,
+   name varchar(128),
+   description text,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (objecttype_id)
+);
+
+-- CREATE TABLE objects_objecttypes 
+-- (
+--    object_id BIGINT UNSIGNED NOT NULL,
+--    objecttype_id BIGINT UNSIGNED NOT NULL,
+--    PRIMARY KEY (object_id, objecttype_id)
+-- );
+
+CREATE TABLE links
+(
+   link_id BIGINT UNSIGNED NOT NULL auto_increment,
+   object_id BIGINT UNSIGNED,
+   objectlinktype_id BIGINT UNSIGNED,
+   object2_id BIGINT UNSIGNED,
+   objectlinktype2_id BIGINT UNSIGNED,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (link_id),
+   KEY object_id (object_id),
+   KEY objectlinktype_id (objectlinktype_id),
+   KEY object2_id (object2_id),
+   KEY objectlinktype2_id (objectlinktype2_id)
+);
+
+CREATE TABLE links_linktypes
+(
+   link_id BIGINT UNSIGNED NOT NULL,
+   linktype_id BIGINT UNSIGNED NOT NULL,
+   PRIMARY KEY (link_id, linktype_id),
+   KEY linktype_id (linktype_id, link_id)
+);
+
+CREATE TABLE linktypes
+(
+   linktype_id BIGINT UNSIGNED NOT NULL auto_increment,
+   name varchar(128),
+   description text,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (linktype_id),
+   KEY name (name)
+);
+
+CREATE TABLE objectlinktypes
+(
+   objectlinktype_id BIGINT UNSIGNED NOT NULL auto_increment,
+   name varchar(128),
+   description text,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (objectlinktype_id),
+   KEY name (name)
+);
+-- CREATE TABLE fields
+-- (
+--    object_id BIGINT UNSIGNED NOT NULL,
+--    objectfields_id BIGINT UNSIGNED NOT NULL,
+--    PRIMARY KEY (object_id, objectfields_id)
+-- );
+
+CREATE TABLE fields
+(
+     field_id BIGINT UNSIGNED NOT NULL auto_increment,
+     name varchar(128),
+     fieldtype varchar(128),
+     created datetime,
+     lastmodified timestamp NOT NULL,
+     PRIMARY KEY (field_id)
+);
+
+   --type_id varchar(128), may want to add types table
+
+CREATE TABLE objectstatuses
+(
+   objectstatus_id BIGINT UNSIGNED NOT NULL auto_increment,
+   name varchar(128),
+   description text,
+   object_id BIGINT UNSIGNED,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (objectstatus_id),
+   KEY object_id (object_id),
+   KEY name (name)
+);
+
+
+-- CREATE TABLE valuetypes (
+--    valuetype_id BIGINT UNSIGNED NOT NULL auto_increment,
+--    name varchar(128),
+--    description text,
+--    created datetime,
+--    lastmodified timestamp NOT NULL,
+--    PRIMARY KEY (valuetype_id),
+--    KEY name (name)
+-- );
+
+
+CREATE TABLE texts
+(
+   text_id BIGINT UNSIGNED NOT NULL auto_increment,
+   value text,
+   description text,
+   object_id BIGINT UNSIGNED,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (text_id),
+   KEY object_id (object_id)
+);
+
+CREATE TABLE ints
+(
+   int_id BIGINT UNSIGNED NOT NULL auto_increment,
+   value BIGINT UNSIGNED,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (int_id),
+   KEY value (value)
+);
+
+CREATE TABLE blobs
+(
+   blob_id BIGINT UNSIGNED NOT NULL auto_increment,
+   value longblob,
+   description text,
+   object_id BIGINT UNSIGNED,
+   created datetime,
+   lastmodified timestamp NOT NULL,
+   PRIMARY KEY (blob_id),
+   KEY object_id (object_id)
+);
+
+
+
+
+
+
+///version 3
+
+
+CREATE TABLE `phonenumbers` (
+  `phonenumber_id` bigint(20) unsigned NOT NULL auto_increment,
+  `name` varchar(128) default NULL,
+  `number` varchar(255) default NULL,
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`phonenumber_id`),
+  KEY `name` (`name`),
+  KEY `number` (`number`)
+) ENGINE=INNODB AUTO_INCREMENT=1000 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `emailaddresses` (
+  `emailaddress_id` bigint(20) unsigned NOT NULL auto_increment,
+  `name` varchar(128) default NULL,
+  `email` varchar(255) default NULL,
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`emailaddress_id`),
+  KEY `name` (`name`),
+  KEY `email` (`email`)
+) ENGINE=INNODB AUTO_INCREMENT=1000 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `classes_phonenumbers` (
+  `class_id` bigint(20) unsigned NOT NULL default '0',
+  `phonenumber_id` bigint(20) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`entity_id`,`phonenumber_id`),
+  CONSTRAINT `class_id_fk` FOREIGN KEY (`class_id`) REFERENCES `classes` (`class_id`),
+  CONSTRAINT `phonenumber_id_fk` FOREIGN KEY (`phonenumber_id`) REFERENCES `phonenumbers` (`phonenumber_id`)
+) ENGINE=INNODB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `classes_emailaddresses` (
+  `class_id` bigint(20) unsigned NOT NULL default '0',
+  `emailaddress_id` bigint(20) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`class_id`,`emailaddress_id`)
+  CONSTRAINT `class_id_fk` FOREIGN KEY (`class_id`) REFERENCES `classes` (`class_id`),
+  CONSTRAINT `emailaddress_id_fk` FOREIGN KEY (`emailaddress_id`) REFERENCES `emailaddresses` (`emailaddress_id`)
+) ENGINE=INNODB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `classes` (
+  `class_id` bigint(20) unsigned NOT NULL auto_increment,
+  `name1` varchar(128) default NULL,
+  `name2` varchar(128) default NULL,
+  `name3` varchar(128) default NULL,
+  `name4` varchar(128) default NULL,
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`class_id`),
+  KEY `name1` (`name1`),
+  KEY `name2` (`name2`),
+  KEY `name3` (`name3`),
+  KEY `name4` (`name4`),
+  KEY `name1name3` (`name1`,`name3`),
+  KEY `created` (`created`)
+) ENGINE=INNODB AUTO_INCREMENT=1000 DEFAULT CHARSET=latin1;
+
+
+
+CREATE TABLE `classtypes` (
+  `classtype_id` bigint(20) unsigned NOT NULL auto_increment,
+  `name` varchar(128) default NULL,
+  `description` text,
+  `created` datetime default NULL,
+  `lastmodified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`classtype_id`),
+  KEY `name` (`name`)
+) ENGINE=INNODB AUTO_INCREMENT=1000 DEFAULT CHARSET=latin1
+
+
+
+CREATE TABLE `classes_classtypes` (
+  `class_id` bigint(20) unsigned NOT NULL default '0',
+  `classtype_id` bigint(20) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`class_id`,`classtype_id`)
+) ENGINE=INNODB DEFAULT CHARSET=latin1

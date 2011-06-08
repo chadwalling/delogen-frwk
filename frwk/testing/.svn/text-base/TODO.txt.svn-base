@@ -1,0 +1,10 @@
+
+1. mysql connection link management
+should not be reconnecting if connection exists
+
+2. session management
+
+3. page authentication
+anything in admin needs to pass valid session and permissions
+
+

@@ -1,0 +1,8 @@
+<? 
+$content = ($request->hasValue("content")) ? $request->getValue("content") : ""; 
+?>
+<table align="center" border="1" width="1024" style="background-color: white;"  height="600">
+	<tr>
+		<td><? if($content) Render::View($content);?></td>
+	</tr>
+</table>

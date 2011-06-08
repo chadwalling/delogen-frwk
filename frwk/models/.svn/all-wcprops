@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/delogen/!svn/ver/131/trunk/frwk/models
+END
+Objects.php
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/delogen/!svn/ver/2/trunk/frwk/models/Objects.php
+END
+Transactions.sql
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/delogen/!svn/ver/2/trunk/frwk/models/Transactions.sql
+END
+ObjectsDatabase.sql
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/delogen/!svn/ver/2/trunk/frwk/models/ObjectsDatabase.sql
+END

@@ -1,0 +1,7 @@
+IP_ADDRESS=204.15.86.56
+SITE_FRWK=/home/src/frwk/*
+SITE_SRC=/home/src/masksofpower/*
+SITE_TARGET=/home/masksofpower/
+SITE_OWNER=masksofpower
+SITE_GROUP=apache
+SITE_DATABASE=masksofpower

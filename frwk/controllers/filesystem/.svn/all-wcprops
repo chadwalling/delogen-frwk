@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/delogen/!svn/ver/130/trunk/frwk/controllers/filesystem
+END
+Environment.ini~
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/delogen/!svn/ver/2/trunk/frwk/controllers/filesystem/Environment.ini~
+END
+Environment.ini
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/delogen/!svn/ver/26/trunk/frwk/controllers/filesystem/Environment.ini
+END
+File.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/delogen/!svn/ver/83/trunk/frwk/controllers/filesystem/File.php
+END
+Render.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/delogen/!svn/ver/130/trunk/frwk/controllers/filesystem/Render.php
+END
+FileSystem.del
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/delogen/!svn/ver/2/trunk/frwk/controllers/filesystem/FileSystem.del
+END
+FileSystemEnvironment.ini
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/delogen/!svn/ver/2/trunk/frwk/controllers/filesystem/FileSystemEnvironment.ini
+END
+FileSystem.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/delogen/!svn/ver/2/trunk/frwk/controllers/filesystem/FileSystem.php
+END

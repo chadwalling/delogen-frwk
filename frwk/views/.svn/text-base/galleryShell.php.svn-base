@@ -1,0 +1,62 @@
+<?
+$gallery = ($request->hasValue("gallery")) ? $request->getValue("gallery") : "";
+?>
+<table bgcolor="#040402" width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+<td valign="top" align="center">
+	<table class="background" valign="center" width="766" height="576" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="2" align="center" class="menu">MAIN | BIO | PHOTOS | PRICES | CONTACT US</td>
+	</tr>
+	<tr valign="top">
+		<td valign="top">
+		<table style="margin-top:50px; margin-left:75px;" width="85px;" height="418" border="0" cellpadding="0" cellspacing="0">
+			<tr valign="top">
+				<td style="width: 70px">
+					<div id="thumbnails" class="thumbnails">
+						<?
+						$i = 0;
+						$filesArray = array();
+						$dir = BASE_PATH_VIEWS."/images/".$gallery;
+						$thumbsDir = $dir."/thumbs/";
+						$file = new File();
+						$file->getFilesByDir($thumbsDir, $filesArray);
+						shuffle($filesArray);
+						$firstImage = $filesArray[0];
+						$firstFullImageName = preg_replace("/\_thumb/", "", $firstImage);
+						foreach ($filesArray as $file)
+						{
+							$fullImageName = preg_replace("/\_thumb/", "", $file);
+							?>
+							<img id="<?=$i?>" onClick="javascript:changeImage('CONTENT_GALLERY', '<?= "/images/".$gallery."/".$fullImageName?>', '<?=$i?>');" class="thumbnailimg" src="<?= "/images/".$gallery."/thumbs/".$file?>" alt="no image">
+							<?
+							$i++;
+						}
+						?>
+					</div>
+				</td>
+				<tr>
+				<td>
+				<img class="arrow" src="/images/roll_l.gif" id="scrollUp" onClick="javascript:scrollIt(-400, 'scrollUp');" alt="no image">
+				<img src='/images/spacer.gif' width='47px' height='1' alt="no image">
+				<img class="arrow" src="/images/roll_r.gif" id="scrollDown" onClick="javascript:scrollIt(400, 'scrollDown');" alt="no image">
+				</tr>
+			</tr>
+		</table>
+		<td valign="middle" align="left">
+			<div valign="middle" align="center" class="struct_gallery" id="STRUCT_GALLERY">
+				<div valign="middle" align="center" align="center" id="CONTENT_GALLERY">
+				<img src="<?= "/images/".$gallery."/".$firstFullImageName?>" alt="no image">
+				</div>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" valign="top">
+			<div align="center" style="color:#756D60; margin-top:4px ">Copyright &copy; Justimagine Photography. All rights reserved.</div>
+		</td>
+	</tr>
+	</table>
+</td>
+</table>
+
+

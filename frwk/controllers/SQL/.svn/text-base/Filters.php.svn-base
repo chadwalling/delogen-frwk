@@ -1,0 +1,394 @@
+<?
+/// Copyright (C) 2007 Delogen
+/// author: Chad Walling
+/// email: chad@delogen.com
+Render::Model('data/Data.php');
+
+define('FIELD_CREATED','created');
+define('FIELD_LASTMODIFIED','lastmodified');
+define('MANUAL_JOIN','_manual_join_');
+define('FIELD_NAME','name');
+define('FIELD_DESCRIPTION','description');
+define('FIELD_JOIN_TYPE','_join_type');
+
+/**
+* @desc basic- Filters objects hold an array of SQL filters(joins info) to be used on Modeled (db tables) objects. 
+* Filters Class builds the SQL join queries. This class will auto join (no DB schema config needed) by attempting to find matching field 
+* names in different tables. 
+* This obviously is a limitation. We feel a necessary evil that helps database designers to build good naming conventions for databases. 
+* This allows for easier data extration and interpretation of databases.                     
+* This framework will not automatically join tables with other tables unless the field names in both tables match exactly.
+* For example: table: user. contains fields user_id and name. Password table: contains fields user_id and password. A join on these tables will work in the framework 
+* because it assumes field names that are the same are join-able. This provides certain freedom but also limitations.
+* TODO: add join constraint or easier customization for more loosley defined database design and naming conventions.
+*/
+
+
+class Filters extends Data
+{
+	private $neverJoinOnFields = array(FIELD_CREATED, FIELD_LASTMODIFIED, FIELD_NAME, FIELD_DESCRIPTION, FIELD_JOIN_TYPE);
+ 	private $_objects = 'objects';
+	public  $joinStr = '';
+	public  $filterStr = '';
+	public  $filterArray = array();
+    public  $limit;
+	public  $target = '<ERROR> target NOT SET';
+	
+	/**
+		Filter Constructor
+		@param $none [typenone]
+		@return
+	*/
+	public function __construct()
+	{
+		parent::__construct();
+		$this->limit = '';
+		$this->addFields(array($this->_objects));
+	}
+	
+
+	/**
+		@param $none [typenone]
+		@return joinStr
+	*/
+	public function getJoinStr()
+	{
+		return $this->joinStr;
+	}
+
+    /**
+        @param $none [typenone]
+        @return filterStr
+    */
+    public function getfilterStr()
+    {
+        $this->filterStr = rtrim($this->filterStr, "&& ");
+        $this->filterStr = rtrim($this->filterStr, "|| ");
+        $this->filterStr = rtrim($this->filterStr, "AND ");
+        $this->filterStr = rtrim($this->filterStr, "OR ");
+        return $this->filterStr;
+    }
+    
+    
+	function setTarget($obj)
+	{
+		if (is_a($obj, "Objects"))
+		{
+			$this->target = $obj->db.".".$obj->name;
+			$this->addRow(array($obj));
+		}
+		else
+		{
+			error_log("function setTarget not passed on object.\n");
+		}
+	}
+
+
+
+	function addFilter(
+		$fields = '',
+		$values = '',
+		$tables = '',
+		$operators = array("="),
+		$operands = array("&&"))
+	{
+        if ($tables == '') $tables = $this->target;
+        
+        if (is_a($fields, "Objects"))
+        {
+            $obj = $fields;
+            $tables = $obj->db.".".$obj->name;
+            $fields = $obj->getFields();
+            $values = $obj->getValues();   
+        }
+		$fields    = (is_array($fields)) ? $fields : array($fields);
+		$values    = (is_array($values)) ? $values : array($values);
+		$tables    = (is_array($tables)) ? $tables : array($tables);
+		$operators = (is_array($operators)) ? $operators : array($operators);
+		$operands  = (is_array($operands)) ? $operands : array($operands);
+		
+		$constraint = " && ";
+		foreach($tables as $table)
+		{
+			foreach($fields as $field)
+			{
+				if (count($values) <= "10000") //INFO: for speed performance dont join 
+				{                    
+					foreach($values as $value)
+					{
+						foreach($operators as $operator)
+						{
+							foreach($operands as $operand)
+							{
+                                //TODO: add db name to query and build filter if objects r passed in
+								$this->filterStr .= " (".$table.".".$field." ".$operator." ".$value.") ".$operand."";
+							}
+						}
+					}
+				}
+				else
+				{
+					return $this->filterStr = '';
+				}
+			}
+		}                       
+		//if ($operands[0] == ''  && $values[0] == '')
+		//{
+			//$this->filterStr = rtrim($this->filterStr, $operand." ");
+		//}
+		$this->filterStr = "".$this->filterStr." "; //group the constraints
+		$constraint .= $this->filterStr;
+		return $constraint;
+	}
+
+
+// 	function addFilter(
+// 		$fields = '',
+// 		$values = '',
+// 		$tables = '',
+// 		$operators = "=",
+// 		$operands = '')
+// 	{
+// 		$fields    = (is_array($fields)) ? $fields : array($fields);
+// 		$values    = (is_array($values)) ? $values : array($values);
+// 		$tables    = (is_array($tables)) ? $tables : array($tables);
+// 	//	$operators = (is_array($operators)) ? $operators : array($operators);
+// 	//	$operands  = (is_array($operands)) ? $operands : array($operands);
+// 		
+// 		$constraint = " && ";
+// 		foreach($tables as $table)
+// 		{
+// 			foreach($fields as $field)
+// 			{
+// 				if (count($values) <= "10000") //INFO: for speed performance dont join 
+// 				{
+// 					//foreach($values as $value)
+// 					//{
+// 					//	foreach($operators as $operator)
+// 					//	{
+// 					//		foreach($operands as $operand)
+// 					//		{
+// 								$this->filterStr .=  implode (" (".$table.".".$field." ".$operator." ".$value.") ".$operand." ", $values);
+// 								//$this->filterStr .= " (".$table.".".$field." ".$operator." ".$value.") ".$operand." ";
+// 					//		}
+// 					//	}
+// 				//	}
+// 				}
+// 				else
+// 				{
+// 					return $this->filterStr = '';
+// 				}
+// 			}
+// 		}
+// 		if ($operands[0] == ''  && $values[0] == '')
+// 		{
+// 			//$this->filterStr = rtrim($this->filterStr, $operand." ");
+// 		}
+// //		$this->filterStr = rtrim($this->filterStr, $operand." ");
+// 		$this->filterStr = "(".$this->filterStr.") "; //group the constraints
+// 		$constraint .= $this->filterStr;
+// 		return $constraint;
+// 	}
+
+	///TODO needs to be completed
+	//by handleing passed in objects with fields set or with no fields set try to find same named fields in table and 
+	//create join when a all parameters are passed in
+	function addJoin(
+		$target_table = '',
+		$target_field = '',
+		$join_type = 'JOIN',
+		$foreign_table = '',
+		$foreign_field = '')
+	{
+
+		if ($target_table != '' && $target_field != '' && $join_type != '' && $foreign_table != '' && $foreign_field != '')
+		{
+			$this->isValidJoinType($join_type);
+			$dataObj = new Data(array("joinStr"));
+			$dataObj->name = MANUAL_JOIN;
+			$dataObj->addRow(array("\n".$join_type."\n\t".$target_table." ON( ".$target_table.".".$target_field." = ".$foreign_table.".".$foreign_field." )"));
+			$this->addRow(array($dataObj));
+		}
+		elseif (is_a($target_table, "Objects") && $target_field == '') //do we assume object linking table???
+		{
+			$this->isValidJoinType($join_type);
+			$target_table->addValues("_join_type", $join_type);
+			$this->addRow(array($target_table));
+		}
+		elseif (is_a($target_table, "Objects") && $target_field != '')
+		{
+			if ($this->isValidJoinType($target_field))
+			{
+				$target_table->addValues("_join_type", $target_field);
+				$this->addRow(array($target_table));
+			}
+		}
+		elseif(is_a($join_type, "Filters"))
+		{
+			///TODO
+		}
+
+		return $this;
+	}
+	
+	///bubble sort with speed optimization if matching found
+	function buildJoinStr()
+	{
+		$sql = '';
+		$count = count($this->getValues("objects"));
+		$targetObj = $this->getValues("objects", 0); ///ASSUMPTION target must be set to join and target will be set before joining
+		
+        for ($i = 0; $i < $count; $i++)
+		{
+			for ($j = 0; $j < $count; $j++)
+			{
+				$objI = $this->getValues("objects", $i);
+				$objJ = $this->getValues("objects", $j);
+				if ($objI->name != $objJ->name && is_a($objJ,"Objects") && is_a($objI,"Objects"))
+				{
+					$matchedFields = array_intersect($objI->getFields(), $objJ->getFields());
+					$matchedFields = array_diff($matchedFields, $this->neverJoinOnFields);
+					///ASSUMPTION: must pre-define the fields you do NOT want to Join on in the define at top of file
+					if (count($matchedFields) > 0)
+					{
+						$idsToFilterOn = '';
+ 						$idsToFilterOn = $objI->getValues(current($matchedFields));
+                        if ($idsToFilterOn == '') $idsToFilterOn = $objJ->getValues(current($matchedFields));
+ 						$idsToFilterOn = (!is_array($idsToFilterOn) && $idsToFilterOn != '') ? array($idsToFilterOn) : $idsToFilterOn;
+ 						if (is_array($idsToFilterOn) && count($idsToFilterOn) > 0)
+ 						{
+ 							///ASSUMPTION: want all matching fields on the ID using "||" //$constraint = " && ";
+ 							$this->addFilter(current($matchedFields), $idsToFilterOn, $objI->name, "=", "||");
+  						}
+                        
+                        //ASSUMPTION using addJoin only join is allowed no left inner or right                       
+                        if ($this->isJoinSet($sql, $objJ->db.".".$objJ->name) || $objJ->db.".".$objJ->name == $targetObj->db.".".$targetObj->name)
+                        {
+                            $tableJoin = $objI->db.".".$objI->name;
+                        }
+                        else
+                        {
+                            $tableJoin = $objJ->db.".".$objJ->name;
+                        }
+                        $join_type = "JOIN";
+                        if ($objI->refTable == $objJ->name)
+                        {
+                            if (!$objJ->hasValue("_join_type")) $objJ->addValues("_join_type", $join_type);
+                            $sql .= " ".strtoupper($objJ->get_join_type())." ".$tableJoin." ON( ".$objI->db.".".$objI->name.".".$objI->fkey." = ".$objJ->db.".".$objI->refTable.".".$objI->refkey." )";                            
+                        }
+                        else
+                        {                        
+                            if (empty($objJ->fTable))
+                            {
+						        if ("".$objI->db.".".$objI->name."" == "".$targetObj->db.".".$targetObj->name."")
+						        {
+                                    if (!$objJ->hasValue("_join_type")) $objJ->addValues("_join_type", $join_type);
+							        $sql .= " ".strtoupper($objJ->get_join_type())." ".$tableJoin." ON( ".$objI->db.".".$objI->name.".".current($matchedFields)." = ".$objJ->db.".".$objJ->name.".".current($matchedFields)." )";
+						        }
+						        else
+						        {
+                                    if (!$objI->hasValue("_join_type")) $objI->addValues("_join_type", $join_type);
+							        $sql .= " ".strtoupper($objI->get_join_type())." ".$tableJoin." ON( ".$objI->db.".".$objI->name.".".current($matchedFields)." = ".$objJ->db.".".$objJ->name.".".current($matchedFields)." )";
+						        }
+                            }
+                        }
+						//$j++;///remove line
+						$i++;
+					}
+				}
+				else
+				{
+					//skip do nothing
+				}
+			}
+		}
+		return $this->joinStr = $sql;
+	}
+	
+    
+    function isJoinSet($sql, $table)
+    {
+        $return = false;
+        if (!empty($sql) && !empty($table))
+        {
+            if (preg_match("/JOIN ".$table." ON/",$sql))
+            {
+                $return = true;   
+            }
+        }
+        return $return;
+        
+    }
+    
+	function isValidJoinType(&$join_type)
+	{
+		$validTypes = array("LEFT JOIN", "JOIN", "INNER JOIN");
+		$isValid = FALSE;
+
+		if (!empty($join_type))
+		{
+			$join_type = strtoupper(trim($join_type));
+			if (in_array($join_type, $validTypes))
+			{
+				$isValid = TRUE;
+			}
+			else
+			{
+				switch ($join_type)
+				{
+					case "*=":
+						$join_type = "LEFT JOIN";
+						$isValid = TRUE;
+						break;
+					case "=*":
+						$join_type = "RIGHT JOIN";
+						$isValid = TRUE;
+						break;
+					case "=":
+						$join_type = "JOIN";
+						$isValid = TRUE;
+						break;
+					default:
+						break;
+				}
+			}
+		}
+		if ($isValid === FALSE)
+		{
+			error_log("Join type: $join_type is not allowed by the system.");
+		}
+		return $isValid;
+	}
+	
+	/**
+		Used to insert or push data into table
+		@param $sql [string] sets the table to insert into.
+		@return
+	*/
+	function getLimit()
+	{
+		return $this->limit;
+	}
+	
+	/**
+		Used to set sql limit
+		@param $sql [string] sets the sql return limit.
+		@return
+	*/
+	function setLimit($limit = 1)
+	{
+		$this->limit =  " LIMIT $limit";
+	}
+	
+	
+	/**
+		Used to set sql limit
+		@param $sql [string] sets the sql to no limit.
+		@return
+	*/
+	function setNoLimit()
+	{
+		$this->limit =  "";
+	}
+}
+?>

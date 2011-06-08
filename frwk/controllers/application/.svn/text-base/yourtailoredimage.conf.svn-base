@@ -1,0 +1,7 @@
+IP_ADDRESS=204.15.86.56
+SITE_FRWK=/home/src/frwk/*
+SITE_SRC=/home/src/yourtailoredimage/*
+SITE_TARGET=/home/yourtailoredimage/
+SITE_OWNER=yourtailoredimage
+SITE_GROUP=apache
+SITE_DATABASE=yourtailoredimage

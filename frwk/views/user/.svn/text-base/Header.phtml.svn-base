@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="content-language" content="en">
+<meta name="author" content="softrockit">
+<meta http-equiv="Reply-to" content="com">
+<meta name="description" content="Free Software and hosting Services">
+<meta name="keywords" content="hosting, web hosting, word press, wordpress, free hosting, free wordpress, free email hosting, free web site builder, sitebuilder">
+<meta name="creation-date" content="01/01/2000">
+<meta name="revisit-after" content="1 days">
+<title>SoftRockIT</title>
+<? Render::View('css/my.php'); ?>
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/ico" />
+</head>
+

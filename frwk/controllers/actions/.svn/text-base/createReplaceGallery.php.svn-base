@@ -1,0 +1,23 @@
+<?
+/// Copyright (C) 2007 Delogen
+/// author: Chad Walling
+/// email: chad@delogen.com
+chdir($cwd = dirname(__FILE__));
+require_once(preg_replace('@(.*)/actions/?.*@i', '$1/', $cwd).'Main.php');
+
+$fname = ($request->hasValue("fname")) ? $request->getValue("fname") : "";
+$lname = ($request->hasValue("lname")) ? $request->getValue("lname") : "";
+$street= ($request->hasValue("street")) ? $request->getValue("street") : "";
+$city  = ($request->hasValue("city")) ? $request->getValue("city") : "";
+$state = ($request->hasValue("state")) ? $request->getValue("state") : "";
+$zip   = ($request->hasValue("zip")) ? $request->getValue("zip") : "";
+$phone = ($request->hasValue("phone")) ? $request->getValue("phone") : "";
+$email = ($request->hasValue("email")) ? $request->getValue("email") : "";
+$classID = ($request->hasValue("class_id")) ? $request->getValue("class_id") : "";
+$replace = (!empty($classID)) ? TRUE : FALSE;
+
+$error = FALSE;
+
+print_r($request);
+ 
+?>

@@ -1,0 +1,182 @@
+<?
+// Copyright (C) 2007 Delogen
+File::IncludeController('SQL/Connector.php');
+
+class ServiceSQL extends Connector
+{
+	var $link;
+	var $name;
+	var $sqlStr;
+	
+	function ServiceSQL()
+	{
+		$this->Connector();
+		$name = $this->name;
+		$link = $this->link;
+		$sqlStr  = $this->sqlStr;
+	}
+
+	function insert(
+		$table = '',
+		$replace = FALSE)
+	{
+		if ($table == '')
+		{
+			$table = $this->name;
+		}
+		
+		$sql = "INSERT INTO ".$table." (";
+		if ($replace === TRUE)
+		{
+			$sql = "REPLACE INTO ".$table." (";
+		}
+		$fullSQL='';
+		$fields = $this->getFieldsArray();
+		if (count($fields))
+		{
+			$sql .= implode($fields, ",");
+			$sql .= ")";
+		}
+		else
+		{
+			$sql .= ")";
+		}
+		$sql .= " VALUES ('";
+	
+		for ($i = 0; $i < $this->row; $i++)
+		{
+			$rows = $this->getRow($i);
+			$vals = implode("','", $rows);
+			$this->push($sql.$vals."');\n");
+		}
+	}
+	
+	function push($sql)
+	{
+		$resource = mysql_query($sql, $this->link);
+		if (!$resource)
+		{
+			die('Invalid query: ' . mysql_error().' QUERY: '.$sql.'');
+		}
+	}
+	
+	function fetch_v1(
+		$field,
+		$value,
+		$limit = 1)
+	{
+		$sql = '';
+		$keyValPair = array();
+		$i = 0;
+		$field = (is_array($field)) ? $field : array($field);
+		$value = (is_array($value)) ? $value : array($value);
+	
+		$allFields = implode(",", $this->getFields());
+		$sql .= "SELECT $allFields FROM ".$this->name." WHERE";
+	
+		$fcount = count($field);
+		$countValue = count($value);
+
+		if ($countValue == $fcount)
+		{
+			$keyValPair = array_combine($field, $value);
+		}
+		elseif ($fcount < $countValue)
+		{
+			foreach($field as $curfield)
+			{
+				foreach($value as $curval)
+				{
+					$keyValPair[$curfield] = $curval; //this works because if array key is duplicate it will only make sql key val pair query once
+				}
+			}
+		}
+		else
+		{
+			echo "problem with data fields and values.\n";
+		}
+		
+		foreach($keyValPair as $key=>$val)
+		{
+			$i++;
+			if(isset($val))
+			{
+				$sql .= " ".$key."='".$val."'";
+				$sql .= ($i == $fcount) ? '' : ' and'; //HELP!!! this needs to be fixed
+			}
+		}
+		
+		if ($limit !== false)
+		{
+			$sql .=  " LIMIT $limit";
+		}
+		//echo "\nServiceSQL: ". $sql. ";\n";
+		$resource = mysql_query($sql, $this->link);
+		if (!$resource)
+		{
+			die('Invalid query: ' . mysql_error().' QUERY: '.$queryString.'');
+		}
+	
+		while ($row = mysql_fetch_row($resource))
+		{
+			$this->addRow($row);
+		}
+		mysql_free_result($resource);
+		return $this;
+	}
+
+	//TODO needs to be completed
+	function joins(
+		$destinationFields = array(),
+		$tables = array(),
+		$fieldValue = array(),
+		$unionOrIntersection )
+	{
+		$fields = '';
+		$join   = '';
+		$select = 'SELECT ';
+		$from   = ' FROM ';
+		$where  = ' WHERE ';
+		$and    = 'and';
+		$or     = 'or';
+		$orderBy= 'ORDER BY ';
+		$limit  = 'limit ';
+	
+		if ($unionOrIntersection != $or && $unionOrIntersection != $and)
+		{
+			echo "\nerror only && or || or '' may be passed in."; exit;
+		}
+	
+		for ($i = 0; $i < count($destinationFields); $i++)
+		{
+			$destinationFields[$i] = $tables[0].".".$destinationFields[$i];
+		}
+	
+		$tablesJoin = $this->createJoinString($tables, $fieldValue, $unionOrIntersection);
+		$tablesStr = implode(", " , $tables);
+	
+		$destinationFields = implode(", " , $destinationFields);
+		//echo "sql: ".$select.$destinationFields.$from.$tablesStr.$where.$this->sqlStr; exit;
+		/** ex: select objectfields.name from objects, objectfields where objects.object_id=objectfields.object_id and objects.object_id=1; */
+	}
+	
+	
+	//TODO needs to be completed
+	function createJoinString(
+		$tables,
+		$fieldValue,
+		$unionOrIntersection,
+		$compareOperator = "=")
+	{
+		if (is_array($fieldValue))
+		{
+			$this->sqlStr = $this->name.".".$fieldValue[0].$compareOperator.$tables[0].".".$fieldValue[0];
+			$this->sqlStr .= " AND ".$this->name.".".$fieldValue[0]."=".$fieldValue[1];
+		}
+		else if(is_a($fieldValue, "Data"))
+		{
+		
+		}
+	}
+}
+?>

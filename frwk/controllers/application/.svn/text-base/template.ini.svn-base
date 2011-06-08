@@ -1,0 +1,8 @@
+;copies from top to bottom so the next line will overwrite files found in the previous lines
+IP_ADDRESS	= 204.15.86.56
+SITE_SRC	= /home/src/USER/DOMAIN.EXT/*
+SITE_TARGET	= /home/USER/DOMAIN.EXT/
+SITE_OWNER	= USER
+SITE_TLD	= EXT
+SITE_GROUP	= apache
+SITE_DATABASE	= DOMAIN.EXT

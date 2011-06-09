@@ -1,4 +1,4 @@
-<?
+<?php
 // Copyright (C) 2007 Delogen
 chdir($cwd = dirname(__FILE__));
 require_once(preg_replace('@(.*)views?.*@i', '$1', $cwd).'/controllers/Main.php');
@@ -129,7 +129,7 @@ $users = rtrim ($users,",");
 <script type="text/javascript" src="js/yui/yahoo/yahoo.js"></script>
 <script type="text/javascript" src="js/yui/event/event.js"></script>
 <script type="text/javascript" src="js/yui/connection/connection.js"></script>
-<?
+<?php
 Render::View("/js/utils.js");
 Render::View("/css/admin.php");
 ?>
@@ -152,7 +152,7 @@ Render::View("/css/admin.php");
 <div id="p">
  <div id="c">
 <form method="POST" name="class_delete" id="class_delete" action="#">
-<?
+<?php
 echo $html;
 ?>
 </form>

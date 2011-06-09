@@ -1,4 +1,4 @@
-<?
+<?php
 /// Copyright (C) 2007 Delogen
 /// author: Chad Walling
 /// email: chad@delogen.com
@@ -122,7 +122,7 @@ class Render
 						if(file_put_contents($file_and_path, $output) === false) error_log('File ['.$file_and_path.'] could not be written. \n');
                         //chown($file_and_path,$_SERVER['HOST']);
                     }
-					
+
 				}
                 include_once($file_and_path);
             }else{

@@ -100,26 +100,26 @@ if($_POST['sendit'])
 }
 ?>
                             <table width="300" border="0" cellspacing="0" cellpadding="0">
-                            <?
+                            <?php
                             if ($sent)
                             {
                                 ?><tr><td width="100"><span>
-                                <?
+                                <?php
                                 echo $sent;
                                 ?>
                                 </span></td></tr>
-                                <?
+                                <?php
                             }
                             else
                             {
                                 if ($_POST['sendit'] && $error != '')
                                 {
                                 ?><tr><td colspan="2"><span>
-                                <?
+                                <?php
                                 echo $error;
                                 ?>
                                 </span></td></tr>
-                                <?
+                                <?php
                                 }
                             ?> 
                                 <p> All fields are required.</p>
@@ -149,7 +149,7 @@ if($_POST['sendit'])
                                 <td height="20">&nbsp;</td>
                                 <td><strong><img src="images/spacer.gif" width="40" height="1"><img src="images/spacer.gif" width="45" height="8"> <input type="submit" name="sendit" value="Submit"> </strong></td>
                               </tr>
-                            <?
+                            <?php
                             }
                             ?>
                             </table>  

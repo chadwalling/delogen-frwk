@@ -1,4 +1,4 @@
-<?
+<?php
 define("IP_ADDRESS", "IP_ADDRESS");
 define("SITE_SRC", "SITE_SRC");
 define("SITE_TARGET", "SITE_TARGET");

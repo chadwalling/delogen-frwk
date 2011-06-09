@@ -1,5 +1,5 @@
 #!/usr/bin/php -q
-<?
+<?php
 require_once('../Main.php');
 require_once 'System/Daemon.php';
 $options = array(

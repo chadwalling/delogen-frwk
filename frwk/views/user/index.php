@@ -1,20 +1,20 @@
-<?
+<?php
 Render::View("/user/Header.phtml");
 ?>
 <body>
-<?
+<?php
 Render::View("user/Logo.phtml");
 Render::View("user/MenuUser.phtml");
 ?>
 <table align="center" border="1" width="800" height="600">
         <tr>
                 <td>
-			<?
+			<?php
 				Render::View("user/UserControlPanel.phtml");
 			?>
 		</td>
 	</tr>
 </table>
-<?
+<?php
 Render::View("user/Footer.phtml");
 ?>

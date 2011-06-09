@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Justimagine Photography Gallery</title>
-<?
+<?php
 Render::View("/css/gallery.php"); //css file
 Render::View("/js/utils.js");
 ?>
@@ -26,7 +26,7 @@ YAHOO.util.Event.onAvailable('scrollUp', scrollIt);
 YAHOO.util.Event.onAvailable('scrollDown', scrollIt);
 
 </script>
-<?
+<?php
 Render::View('/admin/gallery_form.php');
 
 ?>

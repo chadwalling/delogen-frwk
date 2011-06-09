@@ -1,4 +1,4 @@
-<?
+<?php
 /// Copyright (C) 2007 Delogen
 /// author: Chad Walling
 /// email: chad@delogen.com
@@ -188,7 +188,7 @@ class URI extends Data
 		if ($uri !== '')
 		{
 			preg_match('/^([^:]+):\/\//', $uri, $scheme);
-			$scheme = $return[1];
+			$scheme = $scheme[1];
 		}
 		return $scheme;
 	}

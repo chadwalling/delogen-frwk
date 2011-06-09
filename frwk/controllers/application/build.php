@@ -1,4 +1,4 @@
-<?
+<?php
 chdir($cwd = dirname(__FILE__));
 require_once(preg_replace('@(.*)/application/?.*@i', '$1/', $cwd).'Main.php');
 

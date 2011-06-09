@@ -1,4 +1,4 @@
-<?
+<?php
 /// Copyright (C) 2007 Delogen
 ?>
 <html>
@@ -6,7 +6,7 @@
 <script type="text/javascript" src="js/yui/yahoo/yahoo.js"></script>
 <script type="text/javascript" src="js/yui/event/event.js"></script>
 <script type="text/javascript" src="js/yui/connection/connection.js"></script>
-<?      
+<?php     
 Render::View("/js/utils.js");
 Render::View("/css/admin.php");
 ?>

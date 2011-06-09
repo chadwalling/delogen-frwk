@@ -1,4 +1,4 @@
-<?
+<?php
 /// Copyright (C) 2007 Delogen
 //http://delogen.com/?v=/admin/addUpdate.php
 
@@ -26,19 +26,19 @@ $email 	= '';
  };
  </script>
 
-<?
+<?php
 Render::View("/js/utils.js");
 Render::View("/css/admin.php");
 ?>
 <div id="addUpdateStatic">
 <div id="addUpdateDynamic">
 <form method="POST" name="class_add_upate" id="class_add_upate" action="?c=/actions/createReplaceClass.php">
-<input type="hidden" name="class_id" value='<?=$class_id?>'>
+<input type="hidden" name="class_id" value='<?php echo $class_id?>'>
 <table border="0" class="ADMIN_HEADER">
-<tr><th>First Name </th><td><input type="text" name="fname" value='<?=$fname?>'></td></tr>
-<tr><th>Last Name </th><td><input type="text" name="lname" value='<?=$lname?>'></td></tr>
-<tr><th>Steet </th><td><input size="30" type="text" name="street" value='<?=$street?>'></td></tr>
-<tr><th>City </th><td><input type="text" name="city" value='<?=$city?>'></td></tr>
+<tr><th>First Name </th><td><input type="text" name="fname" value='<?php echo $fname?>'></td></tr>
+<tr><th>Last Name </th><td><input type="text" name="lname" value='<?php echo $lname?>'></td></tr>
+<tr><th>Steet </th><td><input size="30" type="text" name="street" value='<?php echo $street?>'></td></tr>
+<tr><th>City </th><td><input type="text" name="city" value='<?php echo $city?>'></td></tr>
 <tr><th>State (US Only)</th><td>
 <select name="state">
 	<option value="" selected="true"></option>
@@ -95,7 +95,7 @@ Render::View("/css/admin.php");
 	<option value="WY">WY</option>
 </select>
 </td></tr>
-<tr><th>Postal Code </th><td><input type="text" size="5" maxlength="5" name="zip" value='<?=$zip?>'></td></tr>
+<tr><th>Postal Code </th><td><input type="text" size="5" maxlength="5" name="zip" value='<?php echo $zip?>'></td></tr>
 <tr><th>Country</th><td><select name="countrycode">
 <option value="" selected="true"></option>
 <option value="AF">Afghanistan</option>
@@ -343,25 +343,25 @@ Render::View("/css/admin.php");
 <option value="ZW">Zimbabwe</option>
 </select>
 </td></tr>
-<tr><th>Phone </th><td><input type="text" name="phone" size="10" maxlength="10" value='<?=$phoneN?>'> Example: 1234567890 </td></tr>
-<tr><th>Email </th><td><input type="text" size="30" name="email" value='<?=$email?>'> Must be a valid email</td></tr>
-<!--<tr><th>Domain </th><td><input type="text" name="domain" value='<?=$domain?>'></td></tr>
+<tr><th>Phone </th><td><input type="text" name="phone" size="10" maxlength="10" value='<?php echo $phoneN?>'> Example: 1234567890 </td></tr>
+<tr><th>Email </th><td><input type="text" size="30" name="email" value='<?php echo $email?>'> Must be a valid email</td></tr>
+<!--<tr><th>Domain </th><td><input type="text" name="domain" value='<?php echo $domain?>'></td></tr>
 <tr><td></td><td>I do not have a  domain.<input type="checkbox" name="freedomain" value=""> </td></tr>
 -->
-<!--<tr><th>Site Name: </th><td>softrockit.com/<input type="text" name="domain" value='<?=$domain?>'> </td></tr>-->
-<tr><th>Username </th><td><input type="text" name="username" value='<?=$username?>'></td></tr>
+<!--<tr><th>Site Name: </th><td>softrockit.com/<input type="text" name="domain" value='<?php echo $domain?>'> </td></tr>-->
+<tr><th>Username </th><td><input type="text" name="username" value='<?php echo $username?>'></td></tr>
 
-<tr><th>Password </th><td><input type="password" name="pass" value='<?=$pass?>'></td></tr>
-<tr><th>Re-type Password </th><td><input type="password" name="pass2" value='<?=$pass2?>'></td></tr>
+<tr><th>Password </th><td><input type="password" name="pass" value='<?php echo $pass?>'></td></tr>
+<tr><th>Re-type Password </th><td><input type="password" name="pass2" value='<?php echo $pass2?>'></td></tr>
 <tr><td colspan="2">
-<?
+<?php
 Render::Controller('recaptchalib.php');
 $publickey = "6Le_q74SAAAAAINoYl0ZMT8sa10cNQtLwcbbZEAo";
 echo recaptcha_get_html($publickey);
 ?>
 </td></tr>
 <tr><th>I accept the <a href='terms.php'>Terms</a> </th><td><input type=CHECKBOX name="terms" value='yes'></td></tr>
-<tr><td align="right"><input type="button" name="submit" onclick='javascript: getElementByAJAX("POST", "addUpdateStatic", "addUpdateDynamic", "?c=/actions/createReplaceClass.php&class_id=<?=$class_id?>", "addUpdateStatic", "addUpdateDynamic", "class_add_upate");' value="Register"></td></tr>
+<tr><td align="right"><input type="button" name="submit" onclick='javascript: getElementByAJAX("POST", "addUpdateStatic", "addUpdateDynamic", "?c=/actions/createReplaceClass.php&class_id=<?php echo $class_id?>", "addUpdateStatic", "addUpdateDynamic", "class_add_upate");' value="Register"></td></tr>
 </table>
 </form>
 </div>

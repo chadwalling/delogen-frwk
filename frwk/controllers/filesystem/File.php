@@ -1,4 +1,4 @@
-<?
+<?php
 /// Copyright (C) 2007 Delogen
 /// author: Chad Walling
 /// email: chad@delogen.com
@@ -17,7 +17,7 @@ class File
         }
     }
 
-    function ext($file)
+    static function ext($file)
     {
         return pathinfo($file, PATHINFO_EXTENSION);
     }

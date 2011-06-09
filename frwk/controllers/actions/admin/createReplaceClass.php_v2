@@ -1,4 +1,4 @@
-<?
+<?php
 /// Copyright (C) 2007 Delogen
 /// author: Chad Walling
 /// email: chad@delogen.com

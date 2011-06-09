@@ -4,7 +4,7 @@
 </head>
 <body>
 
-<?
+<?php
 $gallery = '';
 $dir = '';
 $xml = '';

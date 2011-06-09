@@ -1,4 +1,4 @@
-<?
+<?php
 chdir($cwd = dirname(__FILE__));
 require_once(preg_replace('@(.*)/testing/?.*@i', '$1/', $cwd).'controllers/Main.php');
 

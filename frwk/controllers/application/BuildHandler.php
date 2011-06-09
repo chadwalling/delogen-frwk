@@ -1,5 +1,8 @@
 #!/usr/bin/php -q
 <?php
+/*
+* THIS is the Domain Queue handler it pulls domains that need to run the build scripts and create web sites based on web site type.
+*/
 require_once('../Main.php');
 require_once 'System/Daemon.php';
 $options = array(
@@ -29,12 +32,12 @@ while (!System_Daemon::isDying()){
             $class->setclass_id($c_id);
             $class   = $class->fetch();
             $owner   = $class->getname1();
-            
+
             $domains->setDomain_id($domainID);
             $buildD = $domains->fetch();
             $domaintype   = $buildD->getdomaintype_id();
             $domain_name = $buildD->getDomain();
-            
+
             if(!is_null($domaintype) && !is_null($domain_name)){
                 $script = "BuildFrwk.php";
                 $type   = "frwk";
@@ -46,7 +49,7 @@ while (!System_Daemon::isDying()){
                     $owner = "softrockit";
                     $type = "wordpress";
                 }
-                
+
                 echo "php $script $domain_name type=$type owner=$owner > buildlog \n";
                 `php $script $domain_name type=$type owner=$owner > buildlog`;
                 $buildD->sql("DELETE FROM domainsqueue where domain_id=$domainID");
@@ -54,7 +57,7 @@ while (!System_Daemon::isDying()){
             }
         }
     }
-    
+
 }
 
 ?>

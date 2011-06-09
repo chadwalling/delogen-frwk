@@ -1,5 +1,4 @@
 <script type="text/javascript">
-
 function getElementByAJAX(method, structure, content, url, width, height, formID)
 {
 	//alert(url);
@@ -21,7 +20,7 @@ var responseFailure = function(o)
 
 
 /**
-	@Description- if a successful response is returned from an AJAX request made by getElementByAJAX this function will swap the returned data 
+	@Description- if a successful response is returned from an AJAX request made by getElementByAJAX this function will swap the returned data
 	with the DOM data contained by the "content" variable passed in to getElementByAJAX.
 */
 function updateElementByAJAXCallBack(o)
@@ -38,7 +37,7 @@ function updateElementByAJAXCallBack(o)
 	{
 		replacementDiv.style.width  = this.width;
 	}
-	
+
 	if (this.height !== "" && (this.height.indexOf("px") !== -1 || this.height.indexOf("%") !== -1))
 	{
 		replacementDiv.style.height = this.height;
@@ -53,11 +52,11 @@ function scrollPositionDown(id, px)
 // 	el = document.getElementById(id);
 // 	var top = el.scrollTop;
 // 	//document.getElementById(id).scrollTop=(top + px);
-// 	
+//
 //    var attributes = {
 //       scroll: { to: [YAHOO.util.Dom.get('thumbnails').scrollLeft, 200] }
 //    };
-//    
+//
 //    var anim = new YAHOO.util.Scroll('thumbnails', attributes);
 //    //YAHOO.util.Event.on('thumbnails', 'click', anim.animate, anim, true);
 //    //var anim2 = new YAHOO.util.Scroll('thumbnails', attributes2);
@@ -70,7 +69,7 @@ function scrollPositionUp(id, px)
 // 	el = document.getElementById(id);
 // 	var top = el.scrollTop;
 // 	//document.getElementById(id).scrollTop=(top - px);
-//     
+//
 // 	var attributes =
 // 	{
 // 		scroll: { to: [YAHOO.util.Dom.get('thumbnails').scrollLeft, -400] }
@@ -99,14 +98,14 @@ function changeImage(id, imgSrc, sourceid)
 	div.innerHTML = '';
 	div.style.MozOpacity = .0;
 	div.style.visibility = "hidden";
-	
+
 	img=document.createElement('img');
 	img.id = "fullImg";
 	img.src=imgSrc;
 
 	div.appendChild(img);
 	div.style.visibility = "visible";
-	
+
 	var anim = new YAHOO.util.Anim(id, { opacity: { from: 0, to: 1 } }, 1, YAHOO.util.Easing.easeIn);
 	anim.animate();
 

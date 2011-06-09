@@ -18,32 +18,25 @@ define("WORDPRESS", "wordpress");
 
 
 /**
-* @desc
-* common parameters needed for this while are many
-* but the most basic will be simple a domain name and then the build type
-* these are the two parameters that must be initialized
+* @desc:
+* This class can be extended to auto build any web application, apache conf, and database to be made LIVE on a server or localhost.
+* What this does is looks for a config file that tells source dir and dest dir to build from then to. It builds a user for the domain and permissions for the site based on
+* that domain. EX: /home/chad. chad is user. domain is mydomain.com. Then /home/chad/mydomain.com would be the ROOT dir. This allows for work done in source then a build script can run
+* to push to live server. Or you can make many changes then 'build' to what destination you would like or temporary staging or dev destinations.
+* This makes it very easy to move your code and permissions and apache configs around to quickly build new web sites or update them.
+*
+*
+* @parameter:
 * 1. CLI parameter is domain name
 * 2. CLI parameter is type=<build type> ex: type=wordpress
 * 3. CLI parameter is owner ex: owner=<usernamehere> OR owner
 *
-*
-*
-* build needs to know source and destination
-* build needs to prepare virtual host files then copy from source to destination
-* build needs to prepare .
-* may need to restart apache
-* needs to make sybmolic links to conf files
-* the build conf files needs to be able to specify any source from any location and using any schema and copy partial files and partial directories
-* and then when copying the files replace tagged data.. much like replacing variable data using a template
-* needs to know which type of web site to deploy
-* will need to know virutal host rules and ssl config rules
-*
-* the source and destination my need to be scheme:host:port:directory
-* may want to have the configuration parameters stored in a database and derived from a database versus a conf file
-*
+*	EX- domain type could be wordpress the handler will call the appropriate build script based on the domain type and auto-create
+*	the site. In this example the word press site would be automatically built, configured, and live.
+* 	TODO: finish making this to be able to build a generic delogen-frwk site (non-open source based build)
+* 	may want to have the configuration parameters stored in a database and derived from a database versus a conf file
 *
 */
-
 
 abstract class abstractBuild extends Data{
 
@@ -108,7 +101,7 @@ abstract class abstractBuild extends Data{
 
 	}
 
-
+	//TODO: make this use programmer/user defined paths
 	function createStandardDirAndFiles(){
         $domain = $this->domain;
         $owner = $this->owner;
@@ -177,21 +170,21 @@ abstract class abstractBuild extends Data{
                     die("domain extension is not support/invalid. domain: $this->domain \n");
                 }
             }
-            
+
             if (copy($this->conf, $this->domain.".conf") ){
                 echo "created new conf file from template\n";
                 $this->setConf($this->domain.".conf");
             }else{
                 die("could not copy $this->conf to {$this->domain}.conf \n");
-            }            
+            }
         }
 
-		
+
 		//apache conf vhost file is created now search and replace with new values
 		//setup assoc array to replace values inside of vhost entry
 		$uri = new URI($this->domain);
 		$this->base = $uri->getBase();
-        
+
 		$this->ext_domain = $uri->getExtension();
 		$keyvalpairArray = array(
             "USER"    => $this->owner,
@@ -435,7 +428,7 @@ abstract class abstractBuild extends Data{
 			`rm -frv /home/src/$owner/`;
 			`rm -f /etc/httpd/conf/webapps.d/$owner.com.conf`;
 		}
-		//todo delete user from db
+		//TODO: delete user from db
         //delete target
         //delete database
 	}

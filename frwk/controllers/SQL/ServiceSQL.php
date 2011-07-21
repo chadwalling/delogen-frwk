@@ -153,12 +153,12 @@ class ServiceSQL extends Connector
 			{
 				foreach($values as $val)
 				{
-					$filterStrTemp .= " (".$f."='".$val."') &&";
+					$filterStrTemp .= " (".$f."='". mysql_real_escape_string($val)."') &&";
 				}
 			}
 			else if($values != "")
 			{
-				$filterStrTemp .= " (".$f."='".$values."') &&";
+				$filterStrTemp .= " (".$f."='". mysql_real_escape_string($values)."') &&";
 			}
 
 		}
@@ -181,7 +181,7 @@ class ServiceSQL extends Connector
 				foreach($value as $curval)
 				{
 					error_log( "<debug>key:  $curfield and value: $curval \n\n");
-					$keyValPair[$curfield] = $curval; //this works because if array key is duplicate it will only make sql key val pair query once
+					$keyValPair[$curfield] =  mysql_real_escape_string($curval); //this works because if array key is duplicate it will only make sql key val pair query once
 				}
 			}
 		}
@@ -226,7 +226,7 @@ class ServiceSQL extends Connector
 					$i++;
 					if(isset($val))
 					{
-						$this->sqlStr .= " (".$key."='".$val."')";
+						$this->sqlStr .= " (".$key."='". mysql_real_escape_string($val)."')";
 						$this->sqlStr .= ($i == $fcount) ? '' : ' and'; //HELP!!! this needs to be fixed
 					}
 				}
@@ -272,10 +272,12 @@ class ServiceSQL extends Connector
 		$this->runQuery("CREATE DATABASE $database");
 	}
 
+//this should only be called by a very controlled data cleansing and never directly via a web service
 	function createGrantALL($database, $user, $pass, $host = 'localhost'){
 		$this->sql("GRANT ALL PRIVILEGES ON $database.* TO '$user'@'$host' IDENTIFIED BY '$pass'");
 	}
 
+//this should only be called by a very controlled data cleansing and never directly via a web service
 	function createDBUser($user, $pass, $host = 'localhost'){
 	//`mysql -uroot -p'$dbpass' --execute="CREATE USER $user@localhost IDENTIFIED BY '$pass'"`;
 		$this->sql("CREATE USER $user@$host IDENTIFIED BY '$pass'");

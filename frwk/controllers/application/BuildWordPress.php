@@ -14,7 +14,7 @@ class BuildWordPress extends abstractBuild{
 
 
 	function run(){
-		$pass = $this->generatePassword(9,4);
+		$pass 	= $this->generatePassword(9,4);
 		$domain = $this->domain;
 		$owner  = $this->owner;
 		$database = $owner."_".$domain;
@@ -28,7 +28,6 @@ class BuildWordPress extends abstractBuild{
 		$sql->createDatabase($database);
 		$sql->createGrantALL($database, $dbuser, $pass, 'localhost');
 
-		//`perl -p -i -e s/classes_db/$/g $destination/controllers/filesystem/Environment.ini`;
 		`perl -p -i -e s/__OWNER/$owner/g /home/$owner/$domain/wp-config.php`;
 		`perl -p -i -e s/__DOMAIN/$domain/g /home/$owner/$domain/wp-config.php`;
 		`perl -p -i -e s/__DATABASE/$database/g /home/$owner/$domain/wp-config.php`;
@@ -36,7 +35,7 @@ class BuildWordPress extends abstractBuild{
 
 		`perl -p -i -e s/__USER/$dbuser/g /home/$owner/$domain/wp-config.php`;
 		$this->finalize();
-        `apachectl graceful`;
+        	`apachectl graceful`;
 		die("\n\nbuild done.\n");
 	}
 

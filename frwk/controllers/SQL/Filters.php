@@ -31,7 +31,7 @@ class Filters extends Data
 	public  $joinStr = '';
 	public  $filterStr = '';
 	public  $filterArray = array();
-    public  $limit;
+    	public  $limit;
 	public  $target = '<ERROR> target NOT SET';
 
 	/**
@@ -120,7 +120,7 @@ class Filters extends Data
 						{
 							foreach($operands as $operand)
 							{
-                                //TODO: add db name to query and build filter if objects r passed in
+                                				//TODO: add db name to query and build filter if objects r passed in
 								$this->filterStr .= " (".$table.".".$field." ".$operator." ".$value.") ".$operand."";
 							}
 						}
@@ -181,6 +181,7 @@ class Filters extends Data
 		return $this;
 	}
 
+	//TODO: refactor. This code is horrendous. And does not take into account *=, =, =* values for LEFT, RIGHT, JOINING
 	///bubble sort with speed optimization if matching found
 	function buildJoinStr()
 	{
@@ -188,7 +189,7 @@ class Filters extends Data
 		$count = count($this->getValues("objects"));
 		$targetObj = $this->getValues("objects", 0); ///ASSUMPTION target must be set to join and target will be set before joining
 
-        for ($i = 0; $i < $count; $i++)
+        	for ($i = 0; $i < $count; $i++)
 		{
 			for ($j = 0; $j < $count; $j++)
 			{
@@ -203,7 +204,7 @@ class Filters extends Data
 					{
 						$idsToFilterOn = '';
  						$idsToFilterOn = $objI->getValues(current($matchedFields));
-                        if ($idsToFilterOn == '') $idsToFilterOn = $objJ->getValues(current($matchedFields));
+                       				if ($idsToFilterOn == '') $idsToFilterOn = $objJ->getValues(current($matchedFields));
  						$idsToFilterOn = (!is_array($idsToFilterOn) && $idsToFilterOn != '') ? array($idsToFilterOn) : $idsToFilterOn;
  						if (is_array($idsToFilterOn) && count($idsToFilterOn) > 0)
  						{
@@ -211,37 +212,35 @@ class Filters extends Data
  							$this->addFilter(current($matchedFields), $idsToFilterOn, $objI->name, "=", "||");
   						}
 
-                        //ASSUMPTION using addJoin only join is allowed no left inner or right
-                        if ($this->isJoinSet($sql, $objJ->db.".".$objJ->name) || $objJ->db.".".$objJ->name == $targetObj->db.".".$targetObj->name)
-                        {
-                            $tableJoin = $objI->db.".".$objI->name;
-                        }
-                        else
-                        {
-                            $tableJoin = $objJ->db.".".$objJ->name;
-                        }
-                        $join_type = "JOIN";
-                        if ($objI->refTable == $objJ->name)
-                        {
-                            if (!$objJ->hasValue("_join_type")) $objJ->addValues("_join_type", $join_type);
-                            $sql .= " ".strtoupper($objJ->get_join_type())." ".$tableJoin." ON( ".$objI->db.".".$objI->name.".".$objI->fkey." = ".$objJ->db.".".$objI->refTable.".".$objI->refkey." )";
-                        }
-                        else
-                        {
-                            if (empty($objJ->fTable))
-                            {
-						        if ("".$objI->db.".".$objI->name."" == "".$targetObj->db.".".$targetObj->name."")
-						        {
-                                    if (!$objJ->hasValue("_join_type")) $objJ->addValues("_join_type", $join_type);
-							        $sql .= " ".strtoupper($objJ->get_join_type())." ".$tableJoin." ON( ".$objI->db.".".$objI->name.".".current($matchedFields)." = ".$objJ->db.".".$objJ->name.".".current($matchedFields)." )";
-						        }
-						        else
-						        {
-                                    if (!$objI->hasValue("_join_type")) $objI->addValues("_join_type", $join_type);
-							        $sql .= " ".strtoupper($objI->get_join_type())." ".$tableJoin." ON( ".$objI->db.".".$objI->name.".".current($matchedFields)." = ".$objJ->db.".".$objJ->name.".".current($matchedFields)." )";
-						        }
-                            }
-                        }
+			                        //ASSUMPTION using addJoin only join is allowed no left inner or right
+			                        if ($this->isJoinSet($sql, $objJ->db.".".$objJ->name) || $objJ->db.".".$objJ->name == $targetObj->db.".".$targetObj->name)
+			                        {
+							$tableJoin = $objI->db.".".$objI->name;
+			                        }
+			                        else
+			                        {
+							$tableJoin = $objJ->db.".".$objJ->name;
+			                        }
+			                        $join_type = "JOIN";
+			                        if ($objI->refTable == $objJ->name)
+			                        {
+							if (!$objJ->hasValue("_join_type")) $objJ->addValues("_join_type", $join_type);
+							$sql .= " ".strtoupper($objJ->get_join_type())." ".$tableJoin." ON( ".$objI->db.".".$objI->name.".".$objI->fkey." = ".$objJ->db.".".$objI->refTable.".".$objI->refkey." )";
+			                        }
+			                        else
+			                        {
+			                            if (empty($objJ->fTable))
+			                            {
+							if ("".$objI->db.".".$objI->name."" == "".$targetObj->db.".".$targetObj->name."")
+							{
+			                                	if (!$objJ->hasValue("_join_type")) $objJ->addValues("_join_type", $join_type);
+								$sql .= " ".strtoupper($objJ->get_join_type())." ".$tableJoin." ON( ".$objI->db.".".$objI->name.".".current($matchedFields)." = ".$objJ->db.".".$objJ->name.".".current($matchedFields)." )";
+							}else{
+			                                    	if (!$objI->hasValue("_join_type")) $objI->addValues("_join_type", $join_type);
+								$sql .= " ".strtoupper($objI->get_join_type())." ".$tableJoin." ON( ".$objI->db.".".$objI->name.".".current($matchedFields)." = ".$objJ->db.".".$objJ->name.".".current($matchedFields)." )";
+							}
+			                            }
+			                        }
 						//$j++;///remove line
 						$i++;
 					}

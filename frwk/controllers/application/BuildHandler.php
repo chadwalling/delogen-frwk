@@ -1,7 +1,8 @@
 #!/usr/bin/php -q
 <?php
 /*
-* THIS is the Domain Queue handler it pulls domains that need to run the build scripts and create web sites based on web site type.
+* This is the Domain Queue handler it pulls domains that need to run the build 
+* scripts and create web sites based on web site type. Ex: wordpress, drupal, joomla, custom
 */
 require_once('../Main.php');
 require_once 'System/Daemon.php';

@@ -40,37 +40,34 @@ define("WORDPRESS", "wordpress");
 
 abstract class abstractBuild extends Data{
 
-	var $schema = null;
-	var $port = null;
-//	var $conf;
-	var $type;
-	var $ext_conf = "conf";
-	var $cwd;
-	var $FQP;
-	var $siteSrcCount = 0;
-	var $siteSrc = array();
-	var $target = '';
-	var $owner = '';
-	var $group = '';
-	var $addr = '';
-	var $domain;
-	var $argv;
-	var $iniParameters;
-	var $ext_domain;
-	var $base;
-	var $site_db;
-    const USER = "USER";
-    const DOMAIN = "DOMAIN";
+	protected var $schema = null;
+	protected var $port = null;
+	protected var $type;
+	protected var $ext_conf = "conf";
+	protected var $cwd;
+	protected var $FQP;
+	protected var $siteSrcCount = 0;
+	protected var $siteSrc = array();
+	protected var $target = '';
+	protected var $owner = '';
+	protected var $group = '';
+	protected var $addr = '';
+	protected var $domain;
+	protected var $argv;
+	protected var $iniParameters;
+	protected var $ext_domain;
+	protected var $base;
+	protected var $site_db;
+    	const USER = "USER";
+    	const DOMAIN = "DOMAIN";
 
 	function __construct($argv){
-
-
 		$this->argv = $argv;
-        chdir($cwd = dirname(__FILE__));
+        	chdir($cwd = dirname(__FILE__));
 		$this->cwd = $cwd;
-        $this->cwd = str_replace(':','', $this->cwd);
-        $this->cwd = $this->cwd."/";
-    	if (count($argv)){
+        	$this->cwd = str_replace(':','', $this->cwd);
+        	$this->cwd = $this->cwd."/";
+    		if (count($argv)){
 			$this->setCLIParameters($argv);
 		}
 
@@ -84,7 +81,7 @@ abstract class abstractBuild extends Data{
 		$this->prepareConf();
 
 		if ($this->owner){
-            $owner = $this->owner;
+            		$owner = $this->owner;
 			echo "/usr/sbin/useradd $owner\n";
 			`/usr/sbin/useradd $owner`;
 		}
@@ -95,7 +92,7 @@ abstract class abstractBuild extends Data{
 		$this->prepareINIValues();
 
 		//all the second prepare INI values does is get the newly set ini values by reparsing it
-        $this->loadINIValues();
+        	$this->loadINIValues();
 		$this->createStandardDirAndFiles();
 		$this->processINIParametersAsFunctions();
 
@@ -103,57 +100,50 @@ abstract class abstractBuild extends Data{
 
 	//TODO: make this use programmer/user defined paths
 	function createStandardDirAndFiles(){
-        $domain = $this->domain;
-        $owner = $this->owner;
-        $ext = $this->ext_domain;
-	    //TODO: make the FULL site source path var come from db or from ini file
-        if (!is_dir("/home/$owner/$domain/logs/")){
-            if(!mkdir("/home/$owner/$domain/logs/",0750, true)) die("could not create directories: /home/$owner/$domain/logs/. \n");
-	    }
-        //`mkdir "/home/$owner"`;
-	    //`mkdir "/home/$owner/$domain"`;
-        //`mkdir "/home/$owner/$domain/logs/"`;
-        //`touch "/home/$owner/$domain/logs/"$domain"_accesses.log"`;
-        //`touch "/home/$owner/$domain/logs/"$domain"_errors.log"`;
-        if(!touch("/home/$owner/$domain/logs/".$domain."._accesses.log") ) die("could not create log files: ".$domain."_accesses.log. \n");
-        if(!touch("/home/$owner/$domain/logs/".$domain."_errors.log") ) die("could not create log files: ".$domain."_errors.log. \n");
+        	$domain = $this->domain;
+        	$owner = $this->owner;
+        	$ext = $this->ext_domain;
+	    	//TODO: make the FULL site source path var come from db or from ini file
+        	if (!is_dir("/home/$owner/$domain/logs/")){
+            		if(!mkdir("/home/$owner/$domain/logs/",0750, true)) die("could not create directories: /home/$owner/$domain/logs/. \n");
+	    	}
 
-        if (!is_dir("/home/$owner/$domain/configurations/httpd/domains")){
-            if(!mkdir("/home/$owner/$domain/configurations/httpd/domains",0750, true)) die("could not create directories: /home/$owner/$domain/configurations/httpd/domains .\n");
-        }
-        //`mkdir "/home/$owner/$domain/configurations"`;
-        //`mkdir "/home/$owner/$domain/configurations/httpd"`;
-        //`mkdir "/home/$owner/$domain/configurations/httpd/domains"`;
-        if(!copy($this->cwd.$this->conf, "/home/$owner/$domain/configurations/httpd/domains/".$this->conf)) die("could not copy ".$this->conf." to /home/$owner/$domain/configurations/httpd/domains/ .\n");
-        //`cp $this->conf "/home/$owner/$domain/configurations/httpd/domains/"`;
-        if(!readlink("/etc/httpd/conf/webapps.d/".$this->conf)){
-            if(!symlink("/home/$owner/$domain/configurations/httpd/domains/$this->conf", "/etc/httpd/conf/webapps.d/".$this->conf)) die("could not create symbolic link /etc/httpd/conf/webapps.d/".$this->conf. "\n");
-        }
-        //`ln -s /home/$owner/$domain/configurations/httpd/domains/$this->conf /etc/httpd/conf/webapps.d/$this->conf`;
+        	if(!touch("/home/$owner/$domain/logs/".$domain."._accesses.log") ) die("could not create log files: ".$domain."_accesses.log. \n");
+        	if(!touch("/home/$owner/$domain/logs/".$domain."_errors.log") ) die("could not create log files: ".$domain."_errors.log. \n");
+
+        	if (!is_dir("/home/$owner/$domain/configurations/httpd/domains")){
+            	if(!mkdir("/home/$owner/$domain/configurations/httpd/domains",0750, true)) die("could not create directories: /home/$owner/$domain/configurations/httpd/domains .\n");
+        	}
+
+	        if(!copy($this->cwd.$this->conf, "/home/$owner/$domain/configurations/httpd/domains/".$this->conf)) die("could not copy ".$this->conf." to /home/$owner/$domain/configurations/httpd/domains/ .\n");
+
+	        if(!readlink("/etc/httpd/conf/webapps.d/".$this->conf)){
+	            if(!symlink("/home/$owner/$domain/configurations/httpd/domains/$this->conf", "/etc/httpd/conf/webapps.d/".$this->conf)) die("could not create symbolic link /etc/httpd/conf/webapps.d/".$this->conf. "\n");
+	        }
 	}
 
 	/*
 	* switch ONLY the right side (values side of the ini file
 	*/
 	function prepareINIValues(){
-        //TODO: move array to constructor
+        	//TODO: move array to constructor
 		$keyvalpairArray = array(
-            "USER"   => $this->owner,
+            		"USER"  => $this->owner,
 			DOMAIN	=> $this->domain,
-			EXT		=> $this->ext_domain
+			EXT	=> $this->ext_domain
 		);
 		$file = new File($this->getINI());
 		$file->searchAndReplace($keyvalpairArray);
 	}
 
-    function loadINIValues(){
-        $ini = $this->getINI();
-        if($ini){
-            $this->iniParameters = File::getINIValues($ini);
-        }else{
-            echo "the ini file: <$ini> could not be loaded.\n";
-        }
-    }
+	function loadINIValues(){
+		$ini = $this->getINI();
+		if($ini){
+		    $this->iniParameters = File::getINIValues($ini);
+		}else{
+		    echo "the ini file: <$ini> could not be loaded.\n";
+		}
+	}
 
 	function prepareConf(){
 		//if the domain value passed in is a file use this vhost file for configuration
@@ -165,19 +155,19 @@ abstract class abstractBuild extends Data{
 		}else{
 			//domain value passed in does NOT yet have a config vhost file entry try to copy from the conf template default value
 			//may want to connect to database for this as well
-            if ($this->owner != "softrockit"){
-                if (!$this->isValidExt($this->domain)){
-                    die("domain extension is not support/invalid. domain: $this->domain \n");
-                }
-            }
-
-            if (copy($this->conf, $this->domain.".conf") ){
-                echo "created new conf file from template\n";
-                $this->setConf($this->domain.".conf");
-            }else{
-                die("could not copy $this->conf to {$this->domain}.conf \n");
-            }
-        }
+		    if ($this->owner != "softrockit"){
+		        if (!$this->isValidExt($this->domain)){
+		            die("domain extension is not support/invalid. domain: $this->domain \n");
+		        }
+		    }
+		
+		    if (copy($this->conf, $this->domain.".conf") ){
+		        echo "created new conf file from template\n";
+		        $this->setConf($this->domain.".conf");
+		    }else{
+		        die("could not copy $this->conf to {$this->domain}.conf \n");
+		    }
+        	}
 
 
 		//apache conf vhost file is created now search and replace with new values
@@ -187,7 +177,7 @@ abstract class abstractBuild extends Data{
 
 		$this->ext_domain = $uri->getExtension();
 		$keyvalpairArray = array(
-            "USER"    => $this->owner,
+           	 	"USER"  => $this->owner,
 			DOMAIN  => $this->base,
 			EXT 	=> $this->ext_domain
 		);
@@ -235,8 +225,8 @@ abstract class abstractBuild extends Data{
 			echo "rsync -avur --exclude=.svn  $siteSrc $destination\n";
 			`rsync -avur --exclude=.svn  $siteSrc $destination`;
 		}else{
-            die("could not find SITE_TARGET in the ini file.\n");
-        }
+            		die("could not find SITE_TARGET in the ini file.\n");
+        	}
 	}
 
 	function SITE_TARGET(){
@@ -311,20 +301,20 @@ abstract class abstractBuild extends Data{
 		}
 	}
 
-    //expects the onwer to be passed in
-    //BUT if the passed in value is in this format key=value .. it will set the value to be the owner
-    function setOwner($owner){
-        if($owner){
-            list($key, $value) = split('=', $owner);
-            if (strtolower($key) == "owner" && $value){
-                $this->owner = $value;
-            }elseif($owner){
-                $this->owner = $owner;
-            }else{
-                $this->owner = null;
-            }
-        }
-    }
+	//expects the onwer to be passed in
+	//BUT if the passed in value is in this format key=value .. it will set the value to be the owner
+	function setOwner($owner){
+		if($owner){
+		    list($key, $value) = split('=', $owner);
+		    if (strtolower($key) == "owner" && $value){
+		        $this->owner = $value;
+		    }elseif($owner){
+		        $this->owner = $owner;
+		    }else{
+		        $this->owner = null;
+		    }
+		}
+	}
 
 	function setCLIParameters($argv){
         //TODO: update to loop on all args and parse correctly
@@ -332,20 +322,20 @@ abstract class abstractBuild extends Data{
  		$type = isset($argv[2]) ? $argv[2] : '';
  		$owner = isset($argv[3]) ? $argv[3] : '';
 
-        if (empty($this->domain)){
-            die("first param must be domain you wish to build. \n");
-        }
-
-        if($type){
-			$this->setType($type);
-		}else{
-			die("no build type specified.\n");
-		}
-        if ($owner){
-            $this->setOwner($owner);
-        }else{
-            die("third param must be owner.\n");
-        }
+	        if (empty($this->domain)){
+	            die("first param must be domain you wish to build. \n");
+	        }
+	
+	        if($type){
+				$this->setType($type);
+			}else{
+				die("no build type specified.\n");
+			}
+	        if ($owner){
+	            $this->setOwner($owner);
+	        }else{
+	            die("third param must be owner.\n");
+	        }
 	}
 
 
@@ -379,7 +369,6 @@ abstract class abstractBuild extends Data{
 
 							echo "chmod 750 $path\n";
 							$str = preg_replace('/(\s+)/', '\\\$1', $path);
-							//$cmd = escapeshellcmd("chmod 750 $str");
 							exec("chmod 750 $str");
 							if($file == "compiledtags" || $file == "compiledtags/" || $file == "/compiledtags" || $file == "/compiledtags/") exec("chmod 770 $str");
 							$files = $this->TraverseDirSetPermissions($path, $filesArray);
@@ -389,12 +378,11 @@ abstract class abstractBuild extends Data{
 							$path = File::FixPaths($dir, $file);
 							echo "chmod 640 $path\n";
 							$str = preg_replace('/(\s+)/', '\\\$1', $path);
-							//$cmd = escapeshellcmd("chmod 640 $str");
-                            if(preg_match('/compiledtags/i', $str)){
-                                exec("chmod 660 $str");
-                            }else{
-							    exec("chmod 640 $str");
-                            }
+							if(preg_match('/compiledtags/i', $str)){
+								exec("chmod 660 $str");
+							}else{
+								exec("chmod 640 $str");
+							}
 							$filesArray[] = $path;
 						}
 					}

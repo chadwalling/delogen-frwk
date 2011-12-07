@@ -3,7 +3,7 @@
 /**
 * @desc
 * TODO: this is an example file of how to customize your front end controller the abstract class needs to be updated to accomodate programmer customization better
-* typically instead of calling, you could copy and past the contents from abstactMain::run(); into the Main class and begin customization of the front controller
+* typically instead of calling, you could copy and paste the contents from abstactMain::run(); into the Main class and begin customization of the front controller
 * instruction you can rename this file to match the site it is running for which must match the include inside your Main.php
 * example. domain name of site is www.linux.org naming convention could be class LinuxMain
 */

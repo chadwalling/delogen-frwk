@@ -1,19 +1,19 @@
 <?php
 Render::Model('data/Data.php');
 
-define("IP_ADDRESS", "IP_ADDRESS");
-define("SITE_SRC", "SITE_SRC");
-define("SITE_TARGET", "SITE_TARGET");
-define("SITE_FRWK", "SITE_FRWK");
-define("SITE_OWNER", "SITE_OWNER");
-define("SITE_GROUP", "SITE_GROUP");
+define("IP_ADDRESS", 	"IP_ADDRESS");
+define("SITE_SRC", 	"SITE_SRC");
+define("SITE_TARGET", 	"SITE_TARGET");
+define("SITE_FRWK", 	"SITE_FRWK");
+define("SITE_OWNER", 	"SITE_OWNER");
+define("SITE_GROUP", 	"SITE_GROUP");
 define("SITE_DATABASE", "SITE_DATABASE");
-define("SITE_TLD", "SITE_TLD");
-define("EXT", "EXT");
-define("WILD_CARD", "*");
-define("FRWK","frwk");
-define("FREE", "free");
-define("WORDPRESS", "wordpress");
+define("SITE_TLD", 	"SITE_TLD");
+define("EXT", 		"EXT");
+define("WILD_CARD",	"*");
+define("FRWK",		"frwk");
+define("FREE", 		"free");
+define("WORDPRESS", 	"wordpress");
 
 
 

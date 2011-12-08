@@ -14,9 +14,9 @@ class Objects extends ServiceSQL
 {
 	var $name = '';
 	var $type = FALSE;
-    var $fkey = '';
-    var $refTable = '';
-    var $refkey = ''; 
+    	var $fkey = '';
+    	var $refTable = '';
+    	var $refkey = ''; 
 	public $db = '';
 
 	/**
@@ -86,23 +86,11 @@ class Objects extends ServiceSQL
 
 
 	/**
-		
-		@param $fields [array]
-		@return
-	*/
-// 	function setFields($fields)
-// 	{
-// 		$this->fields = array();
-// 		$this->buildFields($this->name, $fields);
-// 	}
-
-
-
-	/**
 		Gets the Objects object type
 		@param $table [string] the table/object name to model
 		@param $fields [string] override/manually set the table fields
 		@return [objects object]
+		TODO: This needs to refactored and use DESC there is code in here half finished to use fkey mappings
 	*/
 	function buildFields($table, $fields)
 	{
@@ -121,12 +109,12 @@ class Objects extends ServiceSQL
 				}
 				$fields = implode(",", $fields);
 			}
-            $queryStringKey = "show create table ".$this->db.".".$table."";     
+            		$queryStringKey = "show create table ".$this->db.".".$table."";     
             
-            $queryString = "select $fields from ".$this->db.".".$table." limit 1"; //TODO: should be a DESC sql call here
+            		$queryString = "select $fields from ".$this->db.".".$table." limit 1"; //TODO: should be a DESC sql call here
 			//$queryString = "DESC ".$this->db.".".$table."";
 			$resource = mysql_query($queryString, $this->link);            
-            $resourceKey = mysql_query($queryStringKey, $this->link);
+            		$resourceKey = mysql_query($queryStringKey, $this->link);
 			if (!$resource)
 			{
 				error_log('Invalid query: ' . mysql_error().' QUERY: '.$queryString.'');
@@ -134,15 +122,15 @@ class Objects extends ServiceSQL
 			}
 	
 			$numfields = mysql_num_fields($resource);
-            $createTable = $row[1];
-            preg_match('/FOREIGN KEY \(`(.*)`\) REFERENCES `(.*)` \(`(.*)`\)/', $createTable, $matches);
+            		$createTable = $row[1];
+            		preg_match('/FOREIGN KEY \(`(.*)`\) REFERENCES `(.*)` \(`(.*)`\)/', $createTable, $matches);
             
-            if (!empty($matches[1])){ $this->fkey = $matches[1]; }
+           		if (!empty($matches[1])){ $this->fkey = $matches[1]; }
 			if (!empty($matches[2])){ $this->refTable = $matches[2]; }
-            if (!empty($matches[3])){ $this->refkey = $matches[3]; }
+            		if (!empty($matches[3])){ $this->refkey = $matches[3]; }
 
             
-            for ($i = 0; $i < $numfields; $i++)
+            		for ($i = 0; $i < $numfields; $i++)
 			{
 				$fieldnames[$i] = mysql_field_name($resource, $i);
 				$fieldTypes[$i] = mysql_field_type($resource, $i);

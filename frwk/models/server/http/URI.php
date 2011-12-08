@@ -23,8 +23,8 @@ class URI extends Data
 	var $queryArray = array();
 	var $scheme;
 	var $uri = '';
-    var $base = '';
-    var $extension = '';
+    	var $base = '';
+    	var $extension = '';
 
 	function URI ($uri = '')
 	{
@@ -33,26 +33,24 @@ class URI extends Data
 			$uri = $_SERVER["REQUEST_URI"];
 		}
 		$uri = preg_replace("/(.*?)\?/", "?", $uri);
-		//error_log("f(x)URI  uri: ". $uri);
 		$this->setURI($uri);
 		$this->initParseURI($uri);
-        $path_parts = pathinfo($uri);
-        $base       = $path_parts['basename'];
-	$extension  = $path_parts['extension'];
+        	$path_parts = pathinfo($uri);
+        	$base       = $path_parts['basename'];
+		$extension  = $path_parts['extension'];
 		$this->base = str_replace(".".$extension,"",$base);
 		$this->extension = $extension;
-		//$this->initRequestDataObj();
 	}
 
-    function getExtension()
-    {
-        return $this->extension;
-    }
-
-    function getBase()
-    {
-        return $this->base;
-    }
+	function getExtension()
+	{
+		return $this->extension;
+	}
+	
+	function getBase()
+	{
+		return $this->base;
+	}
 
 	function setURI ($uri)
 	{
@@ -109,7 +107,6 @@ class URI extends Data
 
 	function initParseURI ($uri)
 	{
-		//echo "f(x)initParseURI uri: ". $uri;
 		$uri = (isset($_SERVER["REQUEST_URI"])) ? $_SERVER["REQUEST_URI"] : URI_NO_PATH;
 		if ($uri !== URI_NO_PATH)
 		{
@@ -129,7 +126,6 @@ class URI extends Data
 			$return = array();
 			preg_match('/^(\/[^\?#]*)/', $uri, $return);
 		}
-		//error_log("file: ". $return);
 		return $return;
 	}
 
@@ -146,10 +142,6 @@ class URI extends Data
 					$return = $return[2];
 				}
 			}
-// 			else
-// 			{
-// 				preg_match('/^()([^#]+)/', $uri, $return);
-// 			}
 
 		}
 
@@ -160,10 +152,8 @@ class URI extends Data
 	function URIKeyExist($value)
 	{
 		$return = false;
-		//echo "this->getQueryArray(): "; print_r($this->getQueryArray());
 		if (array_key_exists($value, $this->getQueryArray()))
 		{
-			//error_log("val:  $value was found in this uri: ".$this->uri."");
 			$return = true;
 		}
 		return $return;
@@ -218,7 +208,6 @@ class URI extends Data
 					$key = $parameterParts[0];
 					$value = '';
 				}
-				//error_log("URI key: $key ----- val: $val");
 				$parameterArray[$key] = $value;
 			}
 		}

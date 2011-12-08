@@ -48,7 +48,7 @@ class Render
     {
         global $request;
         global $session;
-		Render::setSuffix($file);
+	Render::setSuffix($file);
         if ($file){
             $file = BASE_PATH_MODELS.$file;
             if (is_file($file)){

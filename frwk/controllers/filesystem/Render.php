@@ -97,9 +97,6 @@ class Render
 					}else{
 						error_log("Waring p tag was found in $file_and_path but the matching phtml file: $phtml not found\n");
 					}
-						//echo "tag we will replace: ". $tag. "<br />";
-						//echo "content that will be replaced: " .$replace. "<br />";
-						//echo "final output: ".$output;
 				}
 			}
 			if($foundPhtml) {

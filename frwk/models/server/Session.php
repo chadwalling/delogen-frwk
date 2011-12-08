@@ -37,12 +37,12 @@ class Session extends Data
 		$this->id = session_id();
 		$salt = $class_id.$this->id.microtime().$ip;
 		$_SESSION['id'] = $salt;
-        $_SESSION['class_id'] = $class_id;
+        	$_SESSION['class_id'] = $class_id;
 		$hash = hash( 'sha256', $salt.$class_id);
 
 		$sess = new Objects("sessions");
 		$date = date('Y-m-d H:i:s');
-        $expiresDate = date('Y-m-d H:i:s', strtotime($date ."+ 1 hour"));
+        	$expiresDate = date('Y-m-d H:i:s', strtotime($date ."+ 1 hour"));
 
 		$sess->addRow(array($this->id, $class_id, $hash, $date, $expiresDate, $date));
 		$sess->insert(true);

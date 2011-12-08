@@ -13,9 +13,6 @@ class ServiceSQL extends Connector
 {
 	var $link;
 	var $name;
-//	var $sqlStr = '';
-//	var $joinStr= '';
-	//var $limit = '';
 	var $filterStr = '';
 
 	/**
@@ -74,17 +71,14 @@ class ServiceSQL extends Connector
 
 		if ($replace)
 		{
-			//error_log("we are replacing so must pull result from object");
 			$id = $rows[$fields[0]];
-            if(is_string($id)) $id = "'".$id."'";
+            	if(is_string($id)) $id = "'".$id."'";
 			$returnSQL = "select * from ".$table." where ".$fields[0]."=".$id." limit 1";
 		}
 		else
 		{
-			//error_log("adding new entry so we must retrieve it for return");
 			$returnSQL = "select * from ".$table." order by ".$fields[0]." desc limit 1";
 		}
-		//error_log("getting last inserted object query: $returnSQL");
 		return $this->getLastInsertedObject($returnSQL);
 	}
 

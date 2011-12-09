@@ -10,18 +10,17 @@ class Session extends Data
 	var $file = '';
 	function __construct()
 	{
-	$this->init();
+		$this->init();
 	}
 	
 	function init()
 	{
-	session_start();
+		session_start();
 	}
 	
 	function isStarted()
 	{
-	    return session_id();
-	    return Session::getid();
+	    	return session_id();
 	}
 
     	//creates a session cookie ... assumes authentication was successful

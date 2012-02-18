@@ -4,7 +4,7 @@
 /// email: chad@delogen.com
 
 /**
-* @desc Basic- a glorified super array object.
+* @desc Basic- a glorified super array object. This class should be called Collection.
 * This Class is a powerful field to value objects good at organizing large amounts of information.
 * More robust and helpful than typical arrays. Builds and implements database table like info. This models basic column row field value type data structures.
 */

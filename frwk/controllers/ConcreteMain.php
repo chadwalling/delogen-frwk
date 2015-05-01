@@ -95,7 +95,7 @@ class Main extends AbstactMain
                 //error_log("no session id found \n");
             }else{
                 //check security level from session and restrict access
-                if (Session::getLoginType() != 1 && ($isAdminPageRequested !== false || $isAdminQueryRequested !== false) ){
+                if (Session::getLoginType() != 1 && ($isAdminPageRequested || $isAdminQueryRequested) ){
                     //error_log("sess login type: ".Session::getLoginType()."\n");
                     //error user login type does not have access to any admin URI requests. send to login page for re-auth challenge
                     //TODO: maybe show error for access denied

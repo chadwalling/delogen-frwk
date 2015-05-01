@@ -50,12 +50,13 @@ class Session extends Data
 	}
 
 	function getLoginType(){
-		if(session_id() !== "" && !empty($_SERVER['class_id']) ){
+		if(session_id() !== "" && !empty($_SESSION['class_id']) ){
 		    $logins = new Objects("logins");
-		    $logins->setclass_id($_SERVER['class_id']);
+		    $logins->setclass_id($_SESSION['class_id']);
 		    $l = $logins->fetch();
 		    return $l->getlogintype_id();
 		}
+		error_log("getLoginType() failed.");
 		return NULL;
 	}
     
